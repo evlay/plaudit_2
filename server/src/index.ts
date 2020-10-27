@@ -1,41 +1,46 @@
-import express from "express"
-import dotenv from "dotenv"
-import {getConnectionManager, ConnectionManager, Connection} from "typeorm"
-import "reflect-metadata"
+import express from "express";
+import {Request, Response} from "express";
+import {createConnection} from "typeorm";
+import {User} from "./entity/User";
 
-const env = dotenv.config()
-const PORT = process.env.PORT || 3000
+// create typeorm connection
+createConnection().then(connection => {
+    const userRepository = connection.getRepository(User);
 
-const connectionManager = getConnectionManager()
+    // create and setup express app
+    const app = express();
+    app.use(express.json());
 
-const connection = connectionManager.create({
-    type: 'postgres',
-    host: process.env.PG_HOST,
-    port: 5432,
-    username: process.env.PG_USERNAME,
-    password: process.env.PG_PASS,
-    database: 'plaudit_db'
-})
+    // register routes
 
-// app 
-const app = express()
+    app.get("/users", async function(req: Request, res: Response) {
+        const users = await userRepository.find();
+        res.json(users);
+    });
 
-// middleware
-app.use(express.json())
+    app.get("/users/:id", async function(req: Request, res: Response) {
+        const results = await userRepository.findOne(req.params.id);
+        return res.send(results);
+    });
 
-// Routes
+    app.post("/users", async function(req: Request, res: Response) {
+        const user = await userRepository.create(req.body);
+        const results = await userRepository.save(user);
+        return res.send(results);
+    });
 
-app.get('/', (req, res) => {
-    res.send('hello world')
-})
+    app.put("/users/:id", async function(req: Request, res: Response) {
+        const user = await userRepository.findOne(req.params.id);
+        // userRepository.merge(user, req.body);
+        // const results = await userRepository.save(user);
+        // return res.send(results);
+    });
 
-app.get('/test', async (req, res) => {
-   await connection.connect()
-    .then(connection => console.log('Connected to DB'))
-    .catch(err => console.error(err))
-    return
-})
+    app.delete("/users/:id", async function(req: Request, res: Response) {
+        const results = await userRepository.delete(req.params.id);
+        return res.send(results);
+    });
 
-app.listen(PORT, () => {
-    console.log(`Express server running on port ${PORT}`)
-})
+    // start express server
+    app.listen(3000);
+});
