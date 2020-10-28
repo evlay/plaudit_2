@@ -1,15 +1,15 @@
-import { userInfo } from "os";
-import {createConnection} from "typeorm";
-import {PlauditUser} from "./entity/PlauditUser";
-import express from "express";
+import { userInfo } from 'os'
+import { createConnection } from 'typeorm'
+import { PlauditUser } from './entity/PlauditUser'
+import express from 'express'
 
-const app = express();
+const app = express()
 const PORT = process.env.PORT || 3000
 
 app.use(express.json())
 
-createConnection(/*...*/).then(async connection => {
-
+createConnection(/*...*/)
+  .then(async (connection) => {
     // let plauditUser = new PlauditUser();
     // plauditUser.firstName = 'ev'
     // plauditUser.age = 12
@@ -18,39 +18,54 @@ createConnection(/*...*/).then(async connection => {
     // await connection.manager.save(plauditUser);
     // console.log("user has been saved with user id " + plauditUser.id);
 
-    let plauditUserRepo = connection.getRepository(PlauditUser);
+    // Repositories eaiser to use than entities/entity manager
+
+    let plauditUserRepo = connection.getRepository(PlauditUser)
 
     app.get('/', (req, res) => {
-        res.send('Home page')
+      res.send('Home page')
     })
 
     app.get('/users', async (req, res) => {
-        // Send all users
-        let plauditUserList = await plauditUserRepo.find()
+      // Send all users
+      let plauditUserList = await plauditUserRepo.find()
 
-        res.json(plauditUserList)
+      res.json(plauditUserList)
     })
 
     app.get('/user/:id', async (req, res) => {
-        // Send specific user by id
+      // Send specific user by id
+      const userId = req.params.id
 
+      let singlePlauditUser = await plauditUserRepo.findOne(userId)
+
+      res.json(singlePlauditUser)
     })
 
-    app.post('/user', (req, res) => {
-        // Create user
+    app.post('/user', async (req, res) => {
+      // Create user
+      if(req.body.firstName && req.body.lastName && req.body.age){
+        let plauditUser = new PlauditUser()
+        plauditUser.firstName = req.body.firstName
+        plauditUser.lastName = req.body.lastName
+        plauditUser.age = req.body.age
+        await plauditUserRepo.save(plauditUser)
+          .catch(err => res.json(err))
+          console.log('User saved with user id ' + plauditUser.id)
+          res.status(200).json('User saved with user id ' + plauditUser.id)
+      } else { res.json('firstName, lastName, and age are all required') }
     })
 
     app.put('/user/:id', (req, res) => {
-        // Update user by id
+      // Update user by id
     })
 
     app.delete('/user/:id', (req, res) => {
-        // delete user by id
+      // delete user by id
     })
 
     app.listen(PORT, () => {
-        console.log(`express server listening on port ${PORT}`)
+      console.log(`express server listening on port ${PORT}`)
     })
-
-
-}).catch(error => console.log(error));
+  })
+  .catch((error) => console.log(error))
