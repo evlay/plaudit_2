@@ -18,16 +18,22 @@ createConnection(/*...*/).then(async connection => {
     // await connection.manager.save(plauditUser);
     // console.log("user has been saved with user id " + plauditUser.id);
 
+    let plauditUserRepo = connection.getRepository(PlauditUser);
+
     app.get('/', (req, res) => {
         res.send('Home page')
     })
 
-    app.get('/users', (req, res) => {
+    app.get('/users', async (req, res) => {
         // Send all users
+        let plauditUserList = await plauditUserRepo.find()
+
+        res.json(plauditUserList)
     })
 
-    app.get('/user/:id', (req, res) => {
+    app.get('/user/:id', async (req, res) => {
         // Send specific user by id
+
     })
 
     app.post('/user', (req, res) => {
