@@ -10,16 +10,6 @@ app.use(express.json())
 
 createConnection(/*...*/)
   .then(async (connection) => {
-    // let plauditUser = new PlauditUser();
-    // plauditUser.firstName = 'ev'
-    // plauditUser.age = 12
-    // plauditUser.lastName = 'lay'
-
-    // await connection.manager.save(plauditUser);
-    // console.log("user has been saved with user id " + plauditUser.id);
-
-    // Repositories eaiser to use than entities/entity manager
-
     let plauditUserRepo = connection.getRepository(PlauditUser)
 
     app.get('/', (req, res) => {
@@ -39,7 +29,7 @@ createConnection(/*...*/)
 
       let singlePlauditUser = await plauditUserRepo.findOne(userId)
 
-      res.json(singlePlauditUser)
+      
     })
 
     app.post('/user', async (req, res) => {
@@ -60,12 +50,27 @@ createConnection(/*...*/)
       // Update user by id
     })
 
-    app.delete('/user/:id', (req, res) => {
+    app.delete('/user/:id', async (req, res) => {
       // delete user by id
+      const userId = req.params.id
+
+      await connection
+        .getRepository(PlauditUser)
+        .createQueryBuilder()
+        .delete()
+        .from(PlauditUser)
+        .where("id = :id", {userId})
+        .execute()
+        console.log('delete complete')
+      
+
+
     })
 
     app.listen(PORT, () => {
       console.log(`express server listening on port ${PORT}`)
     })
   })
-  .catch((error) => console.log(error))
+  .catch((error) => { 
+    console.log(error)
+  })
