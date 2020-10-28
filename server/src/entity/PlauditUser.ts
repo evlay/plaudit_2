@@ -1,18 +1,18 @@
 import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
 
 @Entity()
-export class User {
+export class PlauditUser {
 
     @PrimaryGeneratedColumn()
-    id: number;
+    id!: number;
+ 
+    @Column()
+    firstName!: string;
 
     @Column()
-    firstName: string;
+    lastName!: string;
 
     @Column()
-    lastName: string;
-
-    @Column()
-    age: number;
+    age!: number;
 
 }
