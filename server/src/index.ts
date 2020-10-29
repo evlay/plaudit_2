@@ -46,8 +46,23 @@ createConnection(/*...*/)
       } else { res.json('firstName, lastName, and age are all required') }
     })
 
-    app.put('/user/:id', (req, res) => {
+    app.put('/user/:id', async(req, res) => {
       // Update user by id
+      const userId = req.params.id
+
+      await connection
+        .getRepository(PlauditUser)
+        .createQueryBuilder()
+        .update(PlauditUser)
+        .set({ 
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          age: req.body.age
+         })
+        .where("id = :id", {id: userId})
+        .execute()
+        res.json(`User ${userId} updated`)
+        console.log(`User ${userId} updated`)
     })
 
     app.delete('/user/:id', async (req, res) => {
@@ -59,12 +74,10 @@ createConnection(/*...*/)
         .createQueryBuilder()
         .delete()
         .from(PlauditUser)
-        .where("id = :id", {userId})
+        .where("id = :id", {id: userId})
         .execute()
+        res.json('delete complete, if user existed')
         console.log('delete complete')
-      
-
-
     })
 
     app.listen(PORT, () => {
