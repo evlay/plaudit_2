@@ -7,12 +7,12 @@ export class PlauditUser {
     id!: number;
  
     @Column()
-    firstName!: string;
+    username!: string;
 
     @Column()
-    lastName!: string;
+    password!: string;
 
     @Column()
-    age!: number;
+    createdOn!: number;
 
 }

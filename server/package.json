@@ -1,7 +1,7 @@
 {
    "name": "server",
    "version": "0.0.1",
-   "description": "Awesome project developed with TypeORM.",
+   "description": "MVC CRUD Application made using typeORM, mongoose(mongoDB), typescript, Vue.",
    "devDependencies": {
       "@types/node": "^8.0.29",
       "ts-node": "3.3.0",
@@ -13,6 +13,7 @@
       "@types/mongoose": "^5.7.36",
       "body-parser": "^1.19.0",
       "dotenv": "^8.2.0",
+      "envalid": "^6.0.2",
       "express": "^4.17.1",
       "mongoose": "^5.10.11",
       "pg": "^7.3.0",

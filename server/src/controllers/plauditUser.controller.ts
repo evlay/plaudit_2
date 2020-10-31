@@ -1,22 +1,12 @@
-import express from "express"
-import PlauditUser from "../interfaces/plauditUser.interface"
+import express from 'express'
+import PlauditUser from '../interfaces/plauditUser.interface'
+import Controller from '../interfaces/controller.interface'
+import plauditUserModel from '../models/plauditUser.model'
 
-class PlauditUserController {
-  public path = '/users';
-  public router = express.Router();
-
-  private plauditUsers: PlauditUser[] = [
-    {
-      username: 'first@user.com',
-      password: 'supersecret',
-      createdOn: '1/1/1969'
-    },
-    {
-      username: 'second@user.com',
-      password: 'supasecret',
-      createdOn: '1/1/1969'
-    }
-  ]
+class PlauditUserController implements Controller {
+  public path = '/users'
+  public router = express.Router()
+  private plauditUser = plauditUserModel
 
   constructor() {
     this.initializeRoutes()
@@ -24,17 +14,56 @@ class PlauditUserController {
 
   public initializeRoutes() {
     this.router.get(this.path, this.getAllPlauditUsers)
-    this.router.get(this.path + "/:id", this.getOnePlauditUser)
+    this.router.post(this.path, this.createOnePlauditUser)
+    // this.router.get(this.path + "/:id", this.getOnePlauditUser)
   }
 
-  getAllPlauditUsers = (req: express.Request, res: express.Response) => {
-    res.json(this.plauditUsers)
+  private getAllPlauditUsers = (
+    req: express.Request,
+    res: express.Response
+  ) => {
+    this.plauditUser.find().then((plauditUsers) => {
+      res.status(200).send(plauditUsers)
+    })
   }
 
-  getOnePlauditUser = (req: express.Request, res: express.Response) => {
-    let userId:number = parseInt(req.params.id);
-    res.json(this.plauditUsers[1 + userId])
+  private now = new Date()
+
+  private createOnePlauditUser = (
+    req: express.Request,
+    res: express.Response
+  ) => {
+    const newPlauditUser: PlauditUser = {
+      username: `test-user-${this.now.getTime()}`,
+      password: 'secret',
+      createdOn: '2020-10-31',
+    }
+
+    this.plauditUser
+      .create(newPlauditUser)
+      .then(() => {
+        console.log('user created')
+        res
+          .status(200)
+          .json('user created with username ' + newPlauditUser.username)
+      })
+      .catch((err) => {
+        res.status(201).json('error!')
+      })
+
+    console.log(newPlauditUser)
+  }
+
+  private deleteAllTestUsers = (req: Request, res: Response) => {
+    // delete all test users by users that have "test-" using regex
+  }
+
+  private findOnePlauditUserByid = (
+    req: express.Request,
+    res: express.Response
+  ) => {
+    this.plauditUser.findOne
   }
 }
 
-export default PlauditUserController;
+export default PlauditUserController
