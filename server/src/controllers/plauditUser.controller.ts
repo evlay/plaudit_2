@@ -5,6 +5,19 @@ class PlauditUserController {
   public path = '/users';
   public router = express.Router();
 
+  private plauditUsers: PlauditUser[] = [
+    {
+      username: 'first@user.com',
+      password: 'supersecret',
+      createdOn: '1/1/1969'
+    },
+    {
+      username: 'second@user.com',
+      password: 'supasecret',
+      createdOn: '1/1/1969'
+    }
+  ]
+
   constructor() {
     this.initializeRoutes()
   }
@@ -15,11 +28,12 @@ class PlauditUserController {
   }
 
   getAllPlauditUsers = (req: express.Request, res: express.Response) => {
-    res.send('all users')
+    res.json(this.plauditUsers)
   }
 
   getOnePlauditUser = (req: express.Request, res: express.Response) => {
-    res.send('one user')
+    let userId:number = parseInt(req.params.id);
+    res.json(this.plauditUsers[1 + userId])
   }
 }
 
