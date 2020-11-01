@@ -15,6 +15,7 @@ class App {
     this.initializeMiddlewares()
     this.initializeControllers(controllers)
     this.connectToDB()
+    this.initializeErrorHandler()
   }
 
   public listen() {
@@ -26,7 +27,9 @@ class App {
   private initializeMiddlewares() {
     this.app.use(loggerMiddleware)
     this.app.use(express.json())
-    // Errors always need to be passed to last
+  }
+
+  private initializeErrorHandler(){
     this.app.use(errorMiddleware)
   }
 
