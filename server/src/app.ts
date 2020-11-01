@@ -1,6 +1,8 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
+import loggerMiddleware from './middleware/logger.middleware'
+import errorMiddleware from './middleware/error.middleware'
 
 dotenv.config()
 
@@ -22,8 +24,10 @@ class App {
   }
 
   private initializeMiddlewares() {
-    // this.app.use(loggerMiddleware())
+    this.app.use(loggerMiddleware)
     this.app.use(express.json())
+    // Errors always need to be passed to last
+    this.app.use(errorMiddleware)
   }
 
   private initializeControllers(controllers: any) {
