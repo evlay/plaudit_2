@@ -4,6 +4,7 @@
    "description": "MVC CRUD Application made using typeORM, mongoose(mongoDB), typescript, Vue.",
    "devDependencies": {
       "@types/node": "^8.0.29",
+      "nodemon": "^2.0.6",
       "ts-node": "3.3.0",
       "typescript": "^3.3.3333"
    },
@@ -13,6 +14,7 @@
       "@types/mongoose": "^5.7.36",
       "bcrypt": "^5.0.0",
       "body-parser": "^1.19.0",
+      "concurrently": "^5.3.0",
       "dotenv": "^8.2.0",
       "envalid": "^6.0.2",
       "express": "^4.17.1",
@@ -25,6 +27,9 @@
       "dev": "ts-node src/index.ts",
       "start": "node build/index",
       "build": "tsc",
-      "build:start": "tsc && node src/index.js"
+      "build:start": "tsc && node src/index.js",
+      "build:watch": "tsc -w",
+      "nodemon": "nodemon ./src/build/index",
+      "buildmon": "concurrently -k --kill-others-on-fail \"npm run build:watch\" \"npm run nodemon\""
    }
 }

@@ -3,6 +3,7 @@ import PlauditUserController from './controllers/plauditUser.controller'
 import mongoose from 'mongoose'
 import validateEnv from './utils/validateEnv'
 import PostController from './controllers/post.controller';
+import AuthenticationController from './controllers/authentication.controller'
 
 validateEnv()
 
@@ -10,7 +11,8 @@ validateEnv()
 const app = new App(
   [
     new PlauditUserController(),
-    new PostController()
+    new PostController(),
+    new AuthenticationController(),
   ]
 );
 
