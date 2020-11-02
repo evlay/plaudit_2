@@ -24,12 +24,11 @@
       "typeorm": "0.2.25"
    },
    "scripts": {
-      "dev": "ts-node src/index.ts",
       "start": "node build/index",
       "build": "tsc",
       "build:start": "tsc && node src/index.js",
       "build:watch": "tsc -w",
       "nodemon": "nodemon ./src/build/index",
-      "buildmon": "concurrently -k --kill-others-on-fail \"npm run build:watch\" \"npm run nodemon\""
+      "dev": "concurrently -k \"npm run build:watch\" \"npm run nodemon\""
    }
 }
