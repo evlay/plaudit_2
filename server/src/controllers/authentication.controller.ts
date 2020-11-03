@@ -16,8 +16,8 @@ class AuthenticationController implements Controller {
   }
 
   public initializeRoutes() {
-    this.router.get(this.path, this.getAllPlauditUsers)
-    this.router.get(`${this.path}/one`, this.getAllPlauditUsers)
+    this.router.get(`${this.path}/user`, this.getAllPlauditUsers)
+    this.router.get(`${this.path}/user/one`, this.getAllPlauditUsers)
     this.router.post(`${this.path}/register`, this.createPlauditUser);
     this.router.post(`${this.path}/register/test`, this.createOneTestPlauditUser);
   }
@@ -53,10 +53,6 @@ class AuthenticationController implements Controller {
     req: express.Request,
     res: express.Response
   ) => {
-    // check if user with that username exist before creating 
-
-    ///////////////////////////////////////////////////////// 
-
     const password: string = await bcrypt.hash(
       req.body.password,
       this.saltRounds
@@ -68,14 +64,20 @@ class AuthenticationController implements Controller {
       createdOn: new Date(),
     };
 
-    this.plauditUser
-      .create(newPlauditUser)
-      .then(() => {
-        res.send(newPlauditUser);
+    // check if user with that username exist before creating 
+      await this.plauditUser.findOne({username: newPlauditUser.username}, function(err: any, results: any) { 
+        if(err) {
+          throw err
+        } else {
+          if(!results){
+            res.send('user created')
+          } else {
+            res.send('username already exist with that name')
+          }
+        }
       })
-      .catch((err) => {
-        res.status(420).send(err);
-      });
+          
+    ///////////////////////////////////////////////////////// 
   };
 
   private createOneTestPlauditUser = async (
