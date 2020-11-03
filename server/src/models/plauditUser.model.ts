@@ -7,6 +7,6 @@ const plauditUserSchema = new mongoose.Schema({
   createdOn: String
 })
 
-const plauditUserModel = mongoose.model<PlauditUser & mongoose.Document>('PlauditUser', plauditUserSchema)
+const PlauditUserModel = mongoose.model<PlauditUser & mongoose.Document>('PlauditUser', plauditUserSchema)
 
-export default plauditUserModel
+export default PlauditUserModel
