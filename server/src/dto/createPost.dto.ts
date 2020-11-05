@@ -1,6 +1,7 @@
 import {IsString} from 'class-validator'
+import 'reflect-metadata'
 
-export default class CreatePostDto {
+class CreatePostDto {
   @IsString()
   // @ts-ignore: disable strict class initialization
   summary: string
@@ -13,3 +14,5 @@ export default class CreatePostDto {
   // @ts-ignore: disable strict class initialization
   username: string
 }
+
+export default CreatePostDto

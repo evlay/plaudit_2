@@ -3,8 +3,10 @@ import express from 'express'
 import postModel from '../models/post.model'
 import Post from '../interfaces/post.interface'
 import CreatePostDto from '../dto/createPost.dto'
-import { IsNotEmpty, IsString, validate } from 'class-validator'
+import { IsString, validate } from 'class-validator'
 import { NextFunction } from 'express'
+import { plainToClass } from 'class-transformer'
+import 'reflect-metadata'
 
 class PostController implements Controller {
   public path = '/posts'
@@ -56,7 +58,7 @@ class PostController implements Controller {
       username: req.body.username,
     }
 
-    validate(newPost).then((errors) => {
+    validate(plainToClass(CreatePostDto, newPost)).then((errors) => {
       if (errors.length > 0) {
         res.json({
           errors,
@@ -73,19 +75,6 @@ class PostController implements Controller {
           })
       }
     })
-
-    // if(!newPost.summary && !newPost.body) {
-    //   res.status(400).send('No post created, summary and body are required')
-    // } else {
-    //   this.post.create(newPost)
-    //   .then(results => {
-    //     res.send(results)
-    //   })
-    //   .catch(err => {
-    //     res.status(400).send('No user created: ' + err)
-    //     console.log("error: " + err)
-    //   })
-    // }
   }
 
   private updateUserById = (req: express.Request, res: express.Response) => {
