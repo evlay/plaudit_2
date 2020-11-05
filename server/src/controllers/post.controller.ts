@@ -1,8 +1,10 @@
-import Controller from "../interfaces/controller.interface"
+import Controller from '../interfaces/controller.interface'
 import express from 'express'
 import postModel from '../models/post.model'
 import Post from '../interfaces/post.interface'
-import { NextFunction } from "express"
+import CreatePostDto from '../dto/createPost.dto'
+import { IsNotEmpty, IsString, validate } from 'class-validator'
+import { NextFunction } from 'express'
 
 class PostController implements Controller {
   public path = '/posts'
@@ -13,7 +15,7 @@ class PostController implements Controller {
     this.initializeRoutes()
   }
 
-  public initializeRoutes(){
+  public initializeRoutes() {
     this.router.get(this.path, this.getAllPosts)
     this.router.post(this.path, this.createPost)
     this.router.get(`${this.path}/:id`, this.getPostById)
@@ -22,8 +24,8 @@ class PostController implements Controller {
   }
 
   private getAllPosts = (req: express.Request, res: express.Response) => {
-    this.post.find(function(results, err){
-      if(err){
+    this.post.find(function (results, err) {
+      if (err) {
         res.send(err)
       } else {
         res.send(results)
@@ -31,56 +33,82 @@ class PostController implements Controller {
     })
   }
 
-  private getPostById = async (req: express.Request, res: express.Response, next: NextFunction) => {
-    const id = req.params.id;
-    this.post.findById(id)
-    .then(post => {
-      res.send(post)
-    })
-    .catch(error => {
-      res.status(404).send('no user found with that id')
-    })
+  private getPostById = async (
+    req: express.Request,
+    res: express.Response,
+    next: NextFunction
+  ) => {
+    const id = req.params.id
+    this.post
+      .findById(id)
+      .then((post) => {
+        res.send(post)
+      })
+      .catch((error) => {
+        res.status(404).send('no user found with that id')
+      })
   }
 
-  private createPost =  (req: express.Request, res: express.Response) => {
-    const newPost: Post = {
+  private createPost = (req: express.Request, res: express.Response) => {
+    const newPost: CreatePostDto = {
       summary: req.body.summary,
-      body: req.body.body
+      body: req.body.body,
+      username: req.body.username,
     }
 
-    if(!newPost.summary && !newPost.body) {
-      res.status(400).send('No post created, summary and body are required')
-    } else {
-      this.post.create(newPost)
-      .then(results => {
-        res.send(results)
-      })    
-      .catch(err => {
-        res.status(400).send('No user created: ' + err)
-        console.log("error: " + err)
-      })
-    }
+    validate(newPost).then((errors) => {
+      if (errors.length > 0) {
+        res.json({
+          errors,
+        })
+      } else {
+        this.post
+          .create(newPost)
+          .then((results) => {
+            res.send(results)
+          })
+          .catch((err) => {
+            res.status(400).send('No user created: ' + err)
+            console.log('error: ' + err)
+          })
+      }
+    })
+
+    // if(!newPost.summary && !newPost.body) {
+    //   res.status(400).send('No post created, summary and body are required')
+    // } else {
+    //   this.post.create(newPost)
+    //   .then(results => {
+    //     res.send(results)
+    //   })
+    //   .catch(err => {
+    //     res.status(400).send('No user created: ' + err)
+    //     console.log("error: " + err)
+    //   })
+    // }
   }
 
   private updateUserById = (req: express.Request, res: express.Response) => {
-    this.post.findOneAndUpdate({_id: req.params.id}, req.body)
-      .then(results => {
+    this.post
+      .findOneAndUpdate({ _id: req.params.id }, req.body)
+      .then((results) => {
         res.send(results)
       })
-      .catch(err => {
+      .catch((err) => {
         res.status(400).send('No user with that id found')
-        console.log("error: " + err)
+        console.log('error: ' + err)
       })
   }
 
   private deleteUserById = (req: express.Request, res: express.Response) => {
-    this.post.findOneAndDelete({_id: req.params.id})
-      .then(results => {
+    this.post
+      .findOneAndDelete({ _id: req.params.id })
+      .then((results) => {
         res.send(results)
       })
-      .catch(err => {
+      .catch((err) => {
         res.status(400).send('No user with that id found')
-        console.log("error: " + err)
+        console.log('error: ' + err)
       })
   }
 }

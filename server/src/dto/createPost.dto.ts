@@ -1,6 +1,6 @@
 import {IsString} from 'class-validator'
 
-export class CreatePostDto {
+export default class CreatePostDto {
   @IsString()
   // @ts-ignore: disable strict class initialization
   summary: string
