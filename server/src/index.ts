@@ -7,7 +7,6 @@ import AuthenticationController from './controllers/authentication.controller'
 
 validateEnv()
 
-
 const app = new App(
   [
     new PlauditUserController(),

@@ -3,7 +3,8 @@ import Post from '../interfaces/post.interface'
 
 const postSchema = new mongoose.Schema({
   summary: String,
-  body: String
+  body: String,
+  username: String
 })
 
 const postModel = mongoose.model<Post & mongoose.Document>('Post', postSchema)
