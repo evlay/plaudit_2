@@ -1,7 +1,7 @@
 interface PlauditUser {
   username: string;
   password: string;
-  createdOn: string|Date;
+  createdOn: Date;
 }
 
 export default PlauditUser;
