@@ -18,8 +18,8 @@ class AuthenticationController implements Controller {
   }
 
   public initializeRoutes() {
-    this.router.get(`${this.path}/user`, this.getAllPlauditUsers)
-    this.router.get(`${this.path}/user/one`, this.getAllPlauditUsers)
+    this.router.get(`${this.path}/users`, this.getAllPlauditUsers)
+    this.router.get(`${this.path}/users/one`, this.getAllPlauditUsers)
     this.router.post(`${this.path}/register`, this.createPlauditUser)
     this.router.post(`${this.path}/login`, this.login)
     this.router.post(
@@ -98,12 +98,15 @@ class AuthenticationController implements Controller {
     } else {
       await this.plauditUser.findOne({ username: req.body.username }, function (
         err: string,
-        results: string
+        plauditUser: any
       ) {
         if (err) {
           res.send(err)
         } else {
           // Check password with bcrypt.compare
+          bcrypt.compare(req.body.password, plauditUser.password, function(err, result) {
+            res.send(result)
+          })
         }
       })
     }
