@@ -3,6 +3,8 @@ import express from 'express'
 import bcrypt from 'bcrypt'
 import PlauditUser from '../interfaces/plauditUser.interface'
 import PlauditUserModel from '../models/plauditUser.model'
+import { nextTick } from 'process'
+import { NextFunction } from 'express'
 require('dotenv').config()
 
 class AuthenticationController implements Controller {
@@ -19,6 +21,7 @@ class AuthenticationController implements Controller {
     this.router.get(`${this.path}/user`, this.getAllPlauditUsers)
     this.router.get(`${this.path}/user/one`, this.getAllPlauditUsers)
     this.router.post(`${this.path}/register`, this.createPlauditUser)
+    this.router.post(`${this.path}/login`, this.login)
     this.router.post(
       `${this.path}/register/test`,
       this.createOneTestPlauditUser
@@ -62,8 +65,8 @@ class AuthenticationController implements Controller {
     )
 
     const newPlauditUser: PlauditUser = {
-      password,
       username: req.body.username,
+      password,
       createdOn: new Date(),
     }
 
@@ -87,9 +90,23 @@ class AuthenticationController implements Controller {
 
   private login = async (
     req: express.Request,
-    res: express.Response
+    res: express.Response,
+    next: NextFunction
   ) => {
-    
+    if (!req.body.username || !req.body.password) {
+      res.send('username and password are required')
+    } else {
+      await this.plauditUser.findOne({ username: req.body.username }, function (
+        err: string,
+        results: string
+      ) {
+        if (err) {
+          res.send(err)
+        } else {
+          // Check password with bcrypt.compare
+        }
+      })
+    }
   }
 
   private createOneTestPlauditUser = async (

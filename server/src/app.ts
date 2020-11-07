@@ -2,7 +2,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import loggerMiddleware from './middleware/logger.middleware'
-import errorMiddleware from './middleware/error.middleware'
+// import errorMiddleware from './middleware/error.middleware'
 
 dotenv.config()
 
@@ -30,7 +30,7 @@ class App {
   }
 
   private initializeErrorHandler(){
-    this.app.use(errorMiddleware)
+    // this.app.use(errorMiddleware)
   }
 
   private initializeControllers(controllers: any) {
