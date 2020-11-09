@@ -19,13 +19,9 @@ class AuthenticationController implements Controller {
 
   public initializeRoutes() {
     this.router.get(`${this.path}/users`, this.getAllPlauditUsers)
-    this.router.get(`${this.path}/users/one`, this.getAllPlauditUsers)
+    this.router.get(`${this.path}/users/one`, this.findOnePlauditUserById)
     this.router.post(`${this.path}/register`, this.createPlauditUser)
     this.router.post(`${this.path}/login`, this.login)
-    this.router.post(
-      `${this.path}/register/test`,
-      this.createOneTestPlauditUser
-    )
   }
 
   private getAllPlauditUsers = (
