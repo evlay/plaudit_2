@@ -3,8 +3,8 @@ import express from 'express'
 import bcrypt from 'bcrypt'
 import PlauditUser from '../interfaces/plauditUser.interface'
 import PlauditUserModel from '../models/plauditUser.model'
-import { nextTick } from 'process'
 import { NextFunction } from 'express'
+import { ReplSet } from 'typeorm'
 require('dotenv').config()
 
 class AuthenticationController implements Controller {
@@ -96,19 +96,33 @@ class AuthenticationController implements Controller {
     if (!req.body.username || !req.body.password) {
       res.send('username and password are required')
     } else {
-      await this.plauditUser.findOne({ username: req.body.username }, function (
-        err: string,
-        plauditUser: any
-      ) {
-        if (err) {
-          res.send(err)
-        } else {
-          // Check password with bcrypt.compare
-          bcrypt.compare(req.body.password, plauditUser.password, function(err, result) {
-            res.send(result)
-          })
+      const loginUser: string = req.body.username
+      const loginPw: string = req.body.password
+
+      await this.plauditUser.findOne(
+        {
+          username: req.body.username,
+        },
+        function (err, results) {
+          if (err) {
+            res.send(err)
+          } else if (!results) {
+            res.send('no results found')
+          } else {
+            // check
+            bcrypt.compare(loginPw, results.password, function(err, results) {
+              if(err) {
+                res.send(err)
+              }
+              else if(results === true) {
+                res.send('login successful')
+              } else if (results === false) {
+                res.send('login failed')
+              }
+            })
+          }
         }
-      })
+      )
     }
   }
 
@@ -116,8 +130,10 @@ class AuthenticationController implements Controller {
     req: express.Request,
     res: express.Response
   ) => {
+
+    const testPw = 'supersecret'
     const password: string = await bcrypt.hash(
-      req.body.password,
+      testPw,
       this.saltRounds
     )
 
