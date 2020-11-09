@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt'
 import PlauditUser from '../interfaces/plauditUser.interface'
 import PlauditUserModel from '../models/plauditUser.model'
 import { NextFunction } from 'express'
+import { setCookie, getCookie } from '../utils/cookies.utils'
 import { ReplSet } from 'typeorm'
 require('dotenv').config()
 
@@ -115,7 +116,7 @@ class AuthenticationController implements Controller {
                 res.send(err)
               }
               else if(results === true) {
-                res.send('login successful')
+                res.send('at some point this is going to return data to be stored client side as a cookie')
               } else if (results === false) {
                 res.send('login failed')
               }
