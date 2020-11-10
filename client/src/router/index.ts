@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '../views/Home.vue'
+import LoginPage from '../views/LoginPage.vue'
 import PageNotFound from '@/views/PageNotFound.vue'
 
 Vue.use(VueRouter)
@@ -16,6 +17,11 @@ const routes: Array<RouteConfig> = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path:'/login',
+    name: 'Login',
+    component: LoginPage
   },
   {
     path: '/about',
