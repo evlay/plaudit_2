@@ -96,6 +96,7 @@ class AuthenticationController implements Controller {
       const loginPw: string = req.body.password
 
       await this.plauditUser.findOne(
+
         {
           username: req.body.username,
         },
