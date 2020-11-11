@@ -12,6 +12,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
+import http from '../utils/http-common'
 
 @Component
 export default class LoginForm extends Vue {
@@ -25,7 +26,13 @@ export default class LoginForm extends Vue {
   loginStatus = ''
   
   submitLoginForm() {
-    this.loginStatus = 'nice'
+    http.get('/auth/users')
+    .then(response => {
+      console.log(response)
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
   
 }

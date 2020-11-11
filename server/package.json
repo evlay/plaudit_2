@@ -3,6 +3,7 @@
    "version": "0.0.1",
    "description": "MVC CRUD Application made using typeORM, mongoose(mongoDB), typescript, Vue.",
    "devDependencies": {
+      "@types/cors": "^2.8.8",
       "@types/node": "^8.0.29",
       "jsonwebtoken": "^8.5.1",
       "nodemon": "^2.0.6",
@@ -19,6 +20,7 @@
       "class-transformer": "^0.3.1",
       "class-validator": "^0.12.2",
       "concurrently": "^5.3.0",
+      "cors": "^2.8.5",
       "dotenv": "^8.2.0",
       "envalid": "^6.0.2",
       "express": "^4.17.1",
