@@ -47,7 +47,7 @@ h6 {
 }
 
 #app-container {
-  width: 75%;
+  width: 100%;
   // background: coral;
   margin: auto;
 }
