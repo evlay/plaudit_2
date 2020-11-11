@@ -2,6 +2,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import loggerMiddleware from './middleware/logger.middleware'
+import cors from 'cors'
 // import errorMiddleware from './middleware/error.middleware'
 
 dotenv.config()
@@ -11,7 +12,6 @@ class App {
 
   constructor(controllers: any) {
     this.app = express()
-
     this.initializeMiddlewares()
     this.initializeControllers(controllers)
     this.connectToDB()
@@ -27,6 +27,7 @@ class App {
   private initializeMiddlewares() {
     this.app.use(loggerMiddleware)
     this.app.use(express.json())
+    this.app.use(cors())
   }
 
   private initializeErrorHandler(){
