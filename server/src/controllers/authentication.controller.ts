@@ -55,26 +55,33 @@ class AuthenticationController implements Controller {
     req: express.Request,
     res: express.Response
   ) => {
-    const password: string = await bcrypt.hash(
+    const hashedPassword: string = await bcrypt.hash(
       req.body.password,
       this.saltRounds
     )
 
     const newPlauditUser: PlauditUser = {
       username: req.body.username,
-      password,
+      password: hashedPassword,
       createdOn: new Date(),
     }
 
     // check if user with that username exist before creating
     await this.plauditUser.findOne(
       { username: newPlauditUser.username },
-      function (err: any, results: any) {
+      (err: any, results: any) => {
         if (err) {
           throw err
         } else {
           if (!results) {
-            res.send('user created')
+            this.plauditUser
+              .create(newPlauditUser)
+              .then(() => {
+                res.status(200).json(newPlauditUser)
+              })
+              .catch((err: any) => {
+                res.status(201).send(err)
+              })
           } else {
             res.send('username already exist with that name')
           }
@@ -96,7 +103,6 @@ class AuthenticationController implements Controller {
       const loginPw: string = req.body.password
 
       await this.plauditUser.findOne(
-
         {
           username: req.body.username,
         },
@@ -107,12 +113,13 @@ class AuthenticationController implements Controller {
             res.send('no results found')
           } else {
             // check
-            bcrypt.compare(loginPw, results.password, function(err, results) {
-              if(err) {
+            bcrypt.compare(loginPw, results.password, function (err, results) {
+              if (err) {
                 res.send(err)
-              }
-              else if(results === true) {
-                res.send('at some point this is going to return data to be stored client side as a cookie')
+              } else if (results === true) {
+                res.send(
+                  'at some point this is going to return data to be stored client side as a cookie'
+                )
               } else if (results === false) {
                 res.send('login failed')
               }
@@ -127,12 +134,8 @@ class AuthenticationController implements Controller {
     req: express.Request,
     res: express.Response
   ) => {
-
     const testPw = 'supersecret'
-    const password: string = await bcrypt.hash(
-      testPw,
-      this.saltRounds
-    )
+    const password: string = await bcrypt.hash(testPw, this.saltRounds)
 
     const newPlauditUser: PlauditUser = {
       username: `test-user-${new Date().getTime()}`,
