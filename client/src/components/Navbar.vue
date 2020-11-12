@@ -1,32 +1,46 @@
 <template>
   <div id="nav">
-      <router-link class="nav-logo" to="/">Plaudit</router-link>
+    <div class="navbar-container">
+      <div class="logo_container">
+        <router-link class="nav-logo" to="/">Plaudit</router-link>
+      </div>
       <router-link to="/">Home</router-link>
       <router-link to="/login">Login</router-link>
       <router-link to="/register">Register</router-link>
       <router-link to="/posts">Posts</router-link>
     </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
 @Component
-export default class Navbar extends Vue {
-
-}
+export default class Navbar extends Vue {}
 </script>
 
 <style lang="scss" scoped>
 #nav {
   width: 100%;
+  // background-color: coral;
+}
+
+.navbar-container {
   display: flex;
-  justify-content: space-evenly;
-  margin: 0 auto;
-  padding: 1rem 0;
+  justify-content: space-between;
+  align-items: center;
+    margin: 16px 32px;
 }
 
 .nav-logo {
   font-weight: 700;
+}
+
+.router-link-exact-active {
+  text-decoration: underline;
+}
+
+.nav-logo {
+  text-decoration: none;
 }
 </style>

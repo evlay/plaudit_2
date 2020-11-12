@@ -110,7 +110,7 @@ class AuthenticationController implements Controller {
           if (err) {
             res.send(err)
           } else if (!results) {
-            res.send('no results found')
+            res.send('Incorrect email or password.')
           } else {
             // check
             bcrypt.compare(loginPw, results.password, function (err, results) {

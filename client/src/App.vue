@@ -17,6 +17,7 @@ export default {
 
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700;900&family=Roboto&display=swap');
+@import './styles/colors';
 
 * {
   margin: 0;
@@ -34,6 +35,8 @@ a {
   font-family: 'Roboto', sans-serif;
   min-width: 100%;
   min-height: 100vh;
+  color: $slate;
+  background: $white;
   // background: steelblue;
 }
 

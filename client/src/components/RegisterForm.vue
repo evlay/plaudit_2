@@ -63,7 +63,7 @@ export default class RegisterForm extends Vue {
 
   h1 {
     margin-bottom: 1rem;
-    text-size: 1.6rem;
+    font-size: 1.6rem;
   }
 }
 </style>

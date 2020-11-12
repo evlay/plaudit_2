@@ -16,30 +16,28 @@ import http from '../utils/http-common'
 
 @Component
 export default class LoginForm extends Vue {
-
   private loginUsername = ''
-  private loginPassword  = ''
-  private loginStatus  = ''
-  
+  private loginPassword = ''
+  private loginStatus = ''
+
   submitLoginForm() {
-    http.post('/auth/login', {
-      username: this.loginUsername,
-      password: this.loginPassword
-    })
-    .then(response => {
-      const msg = response.data
-      this.loginStatus = msg
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    http
+      .post('/auth/login', {
+        username: this.loginUsername,
+        password: this.loginPassword,
+      })
+      .then((response) => {
+        const msg = response.data
+        this.loginStatus = msg
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   get loginStatusLabel() {
     return this.loginStatus
   }
-  
-  
 }
 </script>
 
@@ -68,14 +66,16 @@ export default class LoginForm extends Vue {
   }
 
   button {
-    background-color: $independence;
-    color: #e4e4e4;
+    background-color: $white;
+    color: $slate;
     border-radius: 1rem;
     border: none;
-    padding: .3rem .5rem;
-    :hover {
-      cursor: pointer;
-    }
+    font-weight: 700;
+    padding: 0.3rem 0.5rem;
+  }
+
+  button:hover {
+    cursor: pointer;
   }
 }
 </style>
