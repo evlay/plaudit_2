@@ -5,35 +5,40 @@
     <input id="login-form-username" v-model="loginUsername" type="text" />
     <label for="Password">Password</label>
     <input id="login-form-password" v-model="loginPassword" type="password" />
-    <p>{{ loginStatus }}</p>
+    <p>{{ loginStatusLabel }}</p>
     <button @click.prevent="submitLoginForm">Submit</button>
   </form>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Vue, Component } from 'vue-property-decorator'
 import http from '../utils/http-common'
 
 @Component
 export default class LoginForm extends Vue {
-  name!: 'LoginForm';
 
-  @Prop({type: String})
-  loginUsername = ''
-  @Prop({type: String})
-  loginPassword =''
-  @Prop({type: String})
-  loginStatus = ''
+  private loginUsername = ''
+  private loginPassword  = ''
+  private loginStatus  = ''
   
   submitLoginForm() {
-    http.get('/auth/users')
+    http.post('/auth/login', {
+      username: this.loginUsername,
+      password: this.loginPassword
+    })
     .then(response => {
-      console.log(response)
+      const msg = response.data
+      this.loginStatus = msg
     })
     .catch(err => {
       console.log(err)
     })
   }
+
+  get loginStatusLabel() {
+    return this.loginStatus
+  }
+  
   
 }
 </script>
