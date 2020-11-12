@@ -44,10 +44,12 @@ export default class LoginForm extends Vue {
 </script>
 
 <style lang="scss">
+@import '../styles/colors';
+
 #login-form {
   display: flex;
   flex-direction: column;
-  width: 25%;
+  width: 50%;
 
   label,
   input {
@@ -63,6 +65,17 @@ export default class LoginForm extends Vue {
 
   h1 {
     margin-bottom: 1rem;
+  }
+
+  button {
+    background-color: $independence;
+    color: #e4e4e4;
+    border-radius: 1rem;
+    border: none;
+    padding: .3rem .5rem;
+    :hover {
+      cursor: pointer;
+    }
   }
 }
 </style>

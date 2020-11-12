@@ -19,7 +19,7 @@ export default class Navbar extends Vue {
 
 <style lang="scss" scoped>
 #nav {
-  width: 20%;
+  width: 100%;
   display: flex;
   justify-content: space-evenly;
   margin: 0 auto;
