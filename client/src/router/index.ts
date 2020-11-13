@@ -41,7 +41,6 @@ const routes: Array<RouteConfig> = [
     path: '/posts',
     name: 'posts',
     component: () => import('../views/PostsPage.vue'),
-    // beforeEnter: (to, from, next) => {}
   }
 ]
 
