@@ -30,9 +30,11 @@ export default class LoginForm extends Vue {
           password: this.loginPassword,
         })
         .then((response) => {
-          if(response.data == true) {
-            console.log('username set in localStorage')
-            window.localStorage.setItem('supaSecretPlauditUser', this.loginUsername)
+          if (response.data == true) {
+            window.localStorage.setItem(
+              'supaSecretPlauditUser',
+              this.loginUsername
+            )
             this.loginStatus = 'Success!'
           } else {
             this.loginStatus = 'Incorrect email or password.'
