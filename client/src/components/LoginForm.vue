@@ -1,13 +1,17 @@
 <template>
-  <form id="login-form">
-    <h1>Login</h1>
-    <label for="Username">Username</label>
-    <input id="login-form-username" v-model="loginUsername" type="text" />
-    <label for="Password">Password</label>
-    <input id="login-form-password" v-model="loginPassword" type="password" />
-    <p>{{ loginStatusLabel }}</p>
-    <button @click.prevent="submitLoginForm">Submit</button>
-  </form>
+  <div class="login-form-container">
+    <form id="login-form">
+      <h1>Login</h1>
+      <label for="Username">Username</label>
+      <input id="login-form-username" v-model="loginUsername" type="text" />
+      <label for="Password">Password</label>
+      <input id="login-form-password" v-model="loginPassword" type="password" />
+      
+      <button @click.prevent="submitLoginForm">Submit</button>
+      <p class="login-error">{{ loginError }}</p>
+      <p class="login-success">{{ loginSuccess }}</p>
+    </form>
+  </div>
 </template>
 
 <script lang="ts">
@@ -18,11 +22,16 @@ import http from '../utils/http-common'
 export default class LoginForm extends Vue {
   private loginUsername = ''
   private loginPassword = ''
-  private loginStatus = ''
+  private loginError = ''
+  private loginSuccess = ''
 
   submitLoginForm() {
+    this.loginSuccess = ''
+    this.loginError = ''
+
+
     if (this.loginUsername === '' || this.loginPassword === '') {
-      this.loginStatus = 'username and password are required'
+      this.loginError = 'username and password are required'
     } else {
       http
         .post('/auth/login', {
@@ -35,9 +44,9 @@ export default class LoginForm extends Vue {
               'supaSecretPlauditUser',
               this.loginUsername
             )
-            this.loginStatus = 'Success!'
+            this.loginSuccess = 'Success!'
           } else {
-            this.loginStatus = 'Incorrect email or password.'
+            this.loginError = 'Incorrect email or password.'
           }
         })
         .catch((err) => {
@@ -46,48 +55,72 @@ export default class LoginForm extends Vue {
     }
   }
 
-  get loginStatusLabel() {
-    return this.loginStatus
+  get getLoginSuccess() {
+    return this.loginSuccess
   }
 }
 </script>
 
 <style lang="scss">
 @import '../styles/colors';
+@import '../styles/utils';
 
-#login-form {
-  display: flex;
-  flex-direction: column;
-  width: 50%;
+.login-form-container {
+  width: 60%;
+  margin: 6.5rem auto;
+  box-shadow: $box-shadow-1;
+  border-radius: .25rem;
+  padding: 1.75rem;
 
-  label,
-  input {
-    margin-bottom: 0.3rem;
-  }
+  #login-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 
-  p {
-    text-align: center;
-    color: red;
-    font-weight: 700;
-    margin-bottom: 0.3rem;
-  }
+    label,
+    input {
+      margin-bottom: $rem-2;
+      
+    }
 
-  h1 {
-    margin-bottom: 1rem;
-  }
+    label {
+      font-weight: 900;
+    }
 
-  button {
-    background-color: $white;
-    color: $slate;
-    border-radius: 1rem;
-    border: none;
-    font-weight: 700;
-    padding: 0.3rem 0.5rem;
-    border: solid black 1px;
-  }
+    input {
+      padding: $rem-3;
+      border: 1px solid $slate;
+      border-radius: $rem-1;
+      font-size: 1.2rem;
+    }
 
-  button:hover {
-    cursor: pointer;
+    p {
+      text-align: center;
+      color: red;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+
+    h1 {
+      font-weight: 500;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    button {
+      background-color: $forest;
+      color: $white;
+      border-radius: $rem-1;
+      border: none;
+      font-weight: 700;
+      font-size: 100%;
+      padding: $rem-4;
+      border: solid $white 1px;
+    }
+
+    button:hover {
+      cursor: pointer;
+    }
   }
 }
 </style>

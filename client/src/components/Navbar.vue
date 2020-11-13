@@ -20,9 +20,14 @@ export default class Navbar extends Vue {}
 </script>
 
 <style lang="scss" scoped>
+@import '../styles/colors';
+
 #nav {
   width: 100%;
   // background-color: coral;
+  a {
+    font-weight: 700;
+  }
 }
 
 .navbar-container {
@@ -42,5 +47,7 @@ export default class Navbar extends Vue {}
 
 .nav-logo {
   text-decoration: none;
+  color: $forest;
+  font-size: 125%;
 }
 </style>
