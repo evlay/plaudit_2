@@ -36,6 +36,13 @@ const routes: Array<RouteConfig> = [
     name: 'register',
     component: () => import('../views/RegisterPage.vue')
   },
+  // Protected routes
+  {
+    path: '/posts',
+    name: 'posts',
+    component: () => import('../views/PostsPage.vue'),
+    // beforeEnter: (to, from, next) => {}
+  }
 ]
 
 const router = new VueRouter({

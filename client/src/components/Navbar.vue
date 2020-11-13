@@ -16,7 +16,13 @@
 import { Component, Vue } from 'vue-property-decorator'
 
 @Component
-export default class Navbar extends Vue {}
+export default class Navbar extends Vue {
+  data() {
+    return {
+      loggedIn: false
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -32,7 +38,7 @@ export default class Navbar extends Vue {}
 
 .navbar-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
     margin: 16px 32px;
 }

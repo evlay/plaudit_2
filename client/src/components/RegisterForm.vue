@@ -1,13 +1,26 @@
 <template>
-  <form id="register-form">
-    <h1>Join the Plaudit community!</h1>
-    <label for="Username">Username</label>
-    <input id="register-form-username" v-model="registerUsername" type="text" />
-    <label for="Password">Password</label>
-    <input id="register-form-password" v-model="registerPassword" type="password" />
-    <p>{{ registerStatusLabel }}</p>
-    <button @click.prevent="submitRegisterForm">Submit</button>
-  </form>
+  <div class="register-form-container">
+    <form id="register-form">
+      <h1>Register</h1>
+      <label for="Username">Username</label>
+      <input
+        id="register-form-username"
+        v-model="registerUsername"
+        type="text"
+      />
+      <label for="Password">Password</label>
+      <input
+        id="register-form-password"
+        v-model="registerPassword"
+        type="password"
+      />
+      <button @click.prevent="submitRegisterForm">Submit</button>
+      <div class="register-status-container">
+        <p class="register-success">{{ registerSuccess }}</p>
+        <p class="register-error">{{ registerError }}</p>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script lang="ts">
@@ -16,70 +29,106 @@ import http from '../utils/http-common'
 
 @Component
 export default class RegisterForm extends Vue {
-
   private registerUsername = ''
-  private registerPassword  = ''
-  private registerStatus  = ''
-  
-  submitRegisterForm() {
-    http.post('/auth/register', {
-      username: this.registerUsername,
-      password: this.registerPassword
-    })
-    .then(response => {
-      const msg = response.data
-      this.registerStatus = msg
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  }
+  private registerPassword = ''
+  private registerStatus = ''
+  private registerSuccess = ''
+  private registerError = ''
 
-  get registerStatusLabel() {
-    return this.registerStatus
+  submitRegisterForm() {
+    this.registerSuccess = ''
+    this.registerError = ''
+
+    if (this.registerUsername == '' || this.registerPassword == '') {
+      this.registerError = 'Username and password are required'
+    } else {
+      http
+        .post('/auth/register', {
+          username: this.registerUsername,
+          password: this.registerPassword,
+        })
+        .then((response) => {
+          const msg = response.data
+          this.registerError = msg
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
   }
-  
-  
 }
 </script>
 
 <style lang="scss">
-@import '../styles/colors.scss';
+@import '../styles/colors';
+@import '../styles/utils';
 
-#register-form {
-  display: flex;
-  flex-direction: column;
-  width: 50%;
+.register-form-container {
+  width: 60%;
+  margin: 6.5rem auto;
+  box-shadow: $box-shadow-1;
+  border-radius: 0.25rem;
+  padding: 1.75rem;
 
-  label,
-  input {
-    margin-bottom: 0.3rem;
-  }
+  #register-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 
-  p {
-    text-align: center;
-    color: red;
-    font-weight: 700;
-    margin-bottom: 0.3rem;
-  }
+    label,
+    input {
+      margin-bottom: $rem-2;
+    }
 
-  h1 {
-    margin-bottom: 1rem;
-    font-size: 1.6rem;
-  }
+    label {
+      font-weight: 900;
+    }
 
-  button {
-    background-color: $white;
-    color: $slate;
-    border-radius: 1rem;
-    border: none;
-    font-weight: 700;
-    padding: 0.3rem 0.5rem;
-    border: solid black 1px;
-  }
+    input {
+      padding: $rem-3;
+      border: 1px solid $slate;
+      border-radius: $rem-1;
+      font-size: 1.2rem;
+    }
 
-  button:hover {
-    cursor: pointer;
+    p {
+      text-align: center;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+
+    h1 {
+      font-weight: 500;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    button {
+      background-color: $forest;
+      color: $white;
+      border-radius: $rem-1;
+      border: none;
+      font-weight: 700;
+      font-size: 100%;
+      padding: $rem-4;
+      border: solid $white 1px;
+    }
+
+    button:hover {
+      cursor: pointer;
+    }
+
+    .register-status-container {
+      margin-top: $rem-4;
+      text-align: center;
+    }
+
+    .register-error {
+      color: red;
+    }
+    .register-success {
+      color: $forest;
+    }
   }
 }
 </style>

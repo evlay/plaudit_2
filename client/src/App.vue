@@ -18,6 +18,7 @@ export default {
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700;900&family=Roboto&display=swap');
 @import './styles/colors';
+@import './styles/utils';
 
 * {
   margin: 0;
@@ -39,6 +40,7 @@ a {
   margin: 0 auto;
   color: $slate;
   background: $white;
+  padding: 0 $rem-4;
   // background: steelblue;
 }
 

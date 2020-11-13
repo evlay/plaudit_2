@@ -6,10 +6,12 @@
       <input id="login-form-username" v-model="loginUsername" type="text" />
       <label for="Password">Password</label>
       <input id="login-form-password" v-model="loginPassword" type="password" />
-      
+
       <button @click.prevent="submitLoginForm">Submit</button>
-      <p class="login-error">{{ loginError }}</p>
-      <p class="login-success">{{ loginSuccess }}</p>
+      <div class="login-status-container">
+        <p class="login-error">{{ loginError }}</p>
+        <p class="login-success">{{ loginSuccess }}</p>
+      </div>
     </form>
   </div>
 </template>
@@ -28,7 +30,6 @@ export default class LoginForm extends Vue {
   submitLoginForm() {
     this.loginSuccess = ''
     this.loginError = ''
-
 
     if (this.loginUsername === '' || this.loginPassword === '') {
       this.loginError = 'username and password are required'
@@ -69,7 +70,7 @@ export default class LoginForm extends Vue {
   width: 60%;
   margin: 6.5rem auto;
   box-shadow: $box-shadow-1;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
   padding: 1.75rem;
 
   #login-form {
@@ -80,7 +81,6 @@ export default class LoginForm extends Vue {
     label,
     input {
       margin-bottom: $rem-2;
-      
     }
 
     label {
@@ -96,7 +96,6 @@ export default class LoginForm extends Vue {
 
     p {
       text-align: center;
-      color: red;
       font-weight: 700;
       margin-bottom: 0.3rem;
     }
@@ -120,6 +119,18 @@ export default class LoginForm extends Vue {
 
     button:hover {
       cursor: pointer;
+    }
+
+    .login-status-container {
+      margin-top: $rem-4;
+      text-align: center;
+    }
+
+    .login-error {
+      color: red;
+    }
+    .login-success {
+      color: $forest;
     }
   }
 }
