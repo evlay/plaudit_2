@@ -44,10 +44,12 @@ export default class RegisterForm extends Vue {
 </script>
 
 <style lang="scss">
+@import '../styles/colors.scss';
+
 #register-form {
   display: flex;
   flex-direction: column;
-  width: 25%;
+  width: 50%;
 
   label,
   input {
@@ -64,6 +66,20 @@ export default class RegisterForm extends Vue {
   h1 {
     margin-bottom: 1rem;
     font-size: 1.6rem;
+  }
+
+  button {
+    background-color: $white;
+    color: $slate;
+    border-radius: 1rem;
+    border: none;
+    font-weight: 700;
+    padding: 0.3rem 0.5rem;
+    border: solid black 1px;
+  }
+
+  button:hover {
+    cursor: pointer;
   }
 }
 </style>

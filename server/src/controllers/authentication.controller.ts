@@ -106,19 +106,19 @@ class AuthenticationController implements Controller {
         {
           username: req.body.username,
         },
-        function (err, results) {
+        (err, results) => {
           if (err) {
             res.send(err)
           } else if (!results) {
             res.send('Incorrect email or password.')
           } else {
             // check
-            bcrypt.compare(loginPw, results.password, function (err, results) {
+            bcrypt.compare(loginPw, results.password, (err, results) => {
               if (err) {
                 res.send(err)
               } else if (results === true) {
-                res.send(
-                  'at some point this is going to return data to be stored client side as a cookie'
+                res.json(
+                  results
                 )
               } else if (results === false) {
                 res.send('login failed')

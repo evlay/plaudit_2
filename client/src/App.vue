@@ -33,8 +33,10 @@ a {
 
 #app {
   font-family: 'Roboto', sans-serif;
-  min-width: 100%;
+  // min-width: 100%;
   min-height: 100vh;
+  max-width: 900px;
+  margin: 0 auto;
   color: $slate;
   background: $white;
   // background: steelblue;

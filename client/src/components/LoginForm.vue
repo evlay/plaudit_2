@@ -21,18 +21,27 @@ export default class LoginForm extends Vue {
   private loginStatus = ''
 
   submitLoginForm() {
-    http
-      .post('/auth/login', {
-        username: this.loginUsername,
-        password: this.loginPassword,
-      })
-      .then((response) => {
-        const msg = response.data
-        this.loginStatus = msg
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    if (this.loginUsername === '' || this.loginPassword === '') {
+      this.loginStatus = 'username and password are required'
+    } else {
+      http
+        .post('/auth/login', {
+          username: this.loginUsername,
+          password: this.loginPassword,
+        })
+        .then((response) => {
+          if(response.data == true) {
+            console.log('username set in localStorage')
+            window.localStorage.setItem('supaSecretPlauditUser', this.loginUsername)
+            this.loginStatus = 'Success!'
+          } else {
+            this.loginStatus = 'Incorrect email or password.'
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
   }
 
   get loginStatusLabel() {
@@ -72,6 +81,7 @@ export default class LoginForm extends Vue {
     border: none;
     font-weight: 700;
     padding: 0.3rem 0.5rem;
+    border: solid black 1px;
   }
 
   button:hover {
