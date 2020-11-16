@@ -41,7 +41,6 @@ a {
   color: $slate;
   background: $white;
   padding: 0 $rem-4;
-  // background: steelblue;
 }
 
 h1,

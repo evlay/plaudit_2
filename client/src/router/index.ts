@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '../views/Home.vue'
 import LoginPage from '../views/LoginPage.vue'
 import PageNotFound from '@/views/PageNotFound.vue'
+import store from "../store"
 
 Vue.use(VueRouter)
 
@@ -40,6 +41,13 @@ const routes: Array<RouteConfig> = [
   {
     path: '/posts',
     name: 'posts',
+    beforeEnter: function (to, from, next) {
+      if(!store.state.currentUser) {
+        next('/login')
+      } else {
+        next()
+      }
+    } ,
     component: () => import('../views/PostsPage.vue'),
   }
 ]
