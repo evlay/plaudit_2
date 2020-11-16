@@ -8,6 +8,8 @@
       <router-link to="/login">Login</router-link>
       <router-link to="/register">Register</router-link>
       <router-link to="/posts">Posts</router-link>
+      <p>Current User: {{ currentUser }}</p>
+      <p></p>
     </div>
   </div>
 </template>
@@ -17,10 +19,8 @@ import { Component, Vue } from 'vue-property-decorator'
 
 @Component
 export default class Navbar extends Vue {
-  data() {
-    return {
-      loggedIn: false
-    }
+  get currentUser() {
+    return this.$store.state.currentUser
   }
 }
 </script>
@@ -40,7 +40,7 @@ export default class Navbar extends Vue {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-    margin: 16px 32px;
+  margin: 16px 32px;
 }
 
 .nav-logo {

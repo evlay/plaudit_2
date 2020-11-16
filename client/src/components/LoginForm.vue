@@ -32,7 +32,7 @@ export default class LoginForm extends Vue {
     this.loginError = ''
 
     if (this.loginUsername === '' || this.loginPassword === '') {
-      this.loginError = 'username and password are required'
+      this.loginError = 'Username and password are required'
     } else {
       http
         .post('/auth/login', {
@@ -41,17 +41,15 @@ export default class LoginForm extends Vue {
         })
         .then((response) => {
           if (response.data == true) {
-            window.localStorage.setItem(
-              'supaSecretPlauditUser',
-              this.loginUsername
-            )
             this.loginSuccess = 'Success!'
+            this.$store.commit('setUser', this.loginUsername)
+            this.$router.push('/posts')
           } else {
             this.loginError = 'Incorrect email or password.'
           }
         })
         .catch((err) => {
-          console.log(err)
+          console.log(err.status)
         })
     }
   }
