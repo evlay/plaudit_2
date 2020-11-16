@@ -1,7 +1,7 @@
 <template>
   <div class="register-form-container">
     <form id="register-form">
-      <h1>Register</h1>
+      <h2>Register</h2>
       <label for="Username">Username</label>
       <input
         id="register-form-username"
@@ -97,10 +97,11 @@ export default class RegisterForm extends Vue {
       margin-bottom: 0.3rem;
     }
 
-    h1 {
+    h2 {
       font-weight: 500;
       margin-bottom: 1rem;
       text-align: center;
+      font-size: 1.6rem;
     }
 
     button {

@@ -1,7 +1,7 @@
 <template>
   <div class="login-form-container">
     <form id="login-form">
-      <h1>Login</h1>
+      <h2>Login</h2>
       <label for="Username">Username</label>
       <input id="login-form-username" v-model="loginUsername" type="text" />
       <label for="Password">Password</label>
@@ -100,10 +100,11 @@ export default class LoginForm extends Vue {
       margin-bottom: 0.3rem;
     }
 
-    h1 {
+    h2 {
       font-weight: 500;
       margin-bottom: 1rem;
       text-align: center;
+      font-size: 1.6rem;
     }
 
     button {
