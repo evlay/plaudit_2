@@ -16,6 +16,11 @@ export default {
   components: {
     Post
   },
+  data() {
+    return {
+      posts: []
+    }
+  },
 
   methods: {
     fetchPosts: () => {
