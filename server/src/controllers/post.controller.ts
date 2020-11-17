@@ -21,7 +21,7 @@ class PostController implements Controller {
     this.router.get(this.path, this.getAllPosts)
     this.router.post(this.path, this.createPost)
     this.router.get(`${this.path}/:id`, this.getPostById)
-    this.router.patch(`${this.path}/:id`, this.updateUserById)
+    this.router.patch(`${this.path}/:id`, this.updatePostById)
     this.router.delete(`${this.path}/:id`, this.deleteUserById)
   }
 
@@ -77,7 +77,7 @@ class PostController implements Controller {
     })
   }
 
-  private updateUserById = (req: express.Request, res: express.Response) => {
+  private updatePostById = (req: express.Request, res: express.Response) => {
     this.post
       .findOneAndUpdate({ _id: req.params.id }, req.body)
       .then((results) => {
