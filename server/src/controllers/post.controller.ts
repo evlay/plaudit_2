@@ -56,6 +56,7 @@ class PostController implements Controller {
       summary: req.body.summary,
       body: req.body.body,
       username: req.body.username,
+      createdOn: new Date().toISOString()
     }
 
     validate(plainToClass(CreatePostDto, newPost)).then((errors) => {
