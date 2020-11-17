@@ -18,5 +18,12 @@ export default class Post extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '../styles/utils';
 
+.post-container {
+  border: solid black 1px;
+  border-radius: $rem-2;
+  padding: $rem-4;
+  margin: $rem-2 0 0 0;
+}
 </style>

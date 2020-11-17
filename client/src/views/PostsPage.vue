@@ -1,9 +1,9 @@
 <template>
   <div class="posts-container">
     <h1>Posts</h1>
-    <ul>
-      <Post summary="summary 1" body="body 1" createdOn="1969"/>
-      <button @click="fetchPosts">Fetch</button>
+    <button @click="fetchPosts">Fetch</button>
+    <ul v-for="post in posts" :key="post.__id">
+      <Post :summary="post.summary" :body="post.body" :createdOn="post.createdOn"/>
     </ul>
   </div>
 </template>
@@ -21,13 +21,18 @@ export default {
       posts: []
     }
   },
-
   methods: {
-    fetchPosts: () => {
+    fetchPosts() {
       http.get('/posts')
-        .then(res => console.log(res.data))
+        .then(res => {
+          this.posts = res.data
+          console.log(this.posts)
+        })
         .catch(err => console.log(err))
     }
+  },
+  mounted(){
+    this.fetchPosts()
   }
 }
 </script>
