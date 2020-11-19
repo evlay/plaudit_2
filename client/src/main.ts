@@ -3,12 +3,21 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faSync } from '@fortawesome/free-solid-svg-icons'
+import { faSync, faWindowClose } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faSync)
+library.add(faSync, faWindowClose)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
+
+// Register a global custom directive called v-focus
+Vue.directive('focus', {
+  // When the bound element is inserted into the DOM...
+  inserted: function (el) {
+    // Focus the element
+    el.focus()
+  }
+})
 
 Vue.config.productionTip = false
 

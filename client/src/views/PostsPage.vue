@@ -10,6 +10,20 @@
           class="fa-spin-hover"
         />
       </button>
+      <button @click="showNewPostModal = true" class="new-post-button">
+        New Post
+      </button>
+    </div>
+    <div v-if="showNewPostModal" class="create-post-mask">
+      <div class="create-post-modal">
+        <div class="create-post-modal-header">
+          <label for="createPost">Create Post&nbsp;</label>
+          <button @click="showNewPostModal = false">
+            <font-awesome-icon icon="window-close" size="2x" />
+          </button>
+        </div>
+        <input type="text" />
+      </div>
     </div>
     <div class="posts-container">
       <ul v-for="post in posts" :key="post.__id">
@@ -24,8 +38,8 @@
 </template>
 
 <script>
-import Post from '@/components/Post'
-import http from '@/utils/http-common'
+import Post from "@/components/Post";
+import http from "@/utils/http-common";
 
 export default {
   components: {
@@ -34,27 +48,29 @@ export default {
   data() {
     return {
       posts: [],
-    }
+      showNewPostModal: false,
+    };
   },
   methods: {
     fetchPosts() {
       http
-        .get('/posts')
+        .get("/posts")
         .then((res) => {
-          this.posts = res.data
-          console.log(this.posts)
+          this.posts = res.data;
+          console.log(this.posts);
         })
-        .catch((err) => console.log(err))
+        .catch((err) => console.log(err));
     },
   },
   mounted() {
-    this.fetchPosts()
+    this.fetchPosts();
   },
-}
+};
 </script>
 
 <style lang="scss">
-@import '../styles/colors';
+@import "../styles/colors";
+@import "../styles/utils";
 
 .posts-page {
   button {
@@ -69,8 +85,10 @@ export default {
   }
 
   .posts-title-container {
-    // display: inline-flex;
-    // align-items: center;
+    display: inline-flex;
+    align-items: center;
+    justify-items: center;
+    justify-content: space-around;
     min-height: 56px;
     width: 100%;
   }
@@ -101,6 +119,33 @@ export default {
     100% {
       -webkit-transform: rotate(359deg);
       transform: rotate(359deg);
+    }
+  }
+
+  .new-post-button {
+    font-weight: 700;
+    border: solid black 1px;
+    border-radius: $rem-2;
+    padding: $rem-3;
+  }
+
+  .create-post-modal {
+    background: gray;
+    margin: auto;
+    padding: $rem-4;
+    border-radius: $rem-4;
+
+    input {
+      width: 100%;
+      height: 10rem;
+    }
+
+    .create-post-modal-header {
+      width: 100%;
+      // background: coral;
+      text-align:center;
+      margin-bottom: $rem-2;
+      
     }
   }
 }

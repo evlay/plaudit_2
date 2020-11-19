@@ -3,7 +3,7 @@
     <form id="login-form">
       <h2>Login</h2>
       <label for="Username">Username</label>
-      <input id="login-form-username" v-model="loginUsername" type="text" />
+      <input v-focus id="login-form-username" v-model="loginUsername" type="text" />
       <label for="Password">Password</label>
       <input id="login-form-password" v-model="loginPassword" type="password" />
 
@@ -17,52 +17,52 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
-import http from '../utils/http-common'
+import { Vue, Component } from "vue-property-decorator";
+import http from "../utils/http-common";
 
 @Component
 export default class LoginForm extends Vue {
-  private loginUsername = ''
-  private loginPassword = ''
-  private loginError = ''
-  private loginSuccess = ''
+  private loginUsername = "";
+  private loginPassword = "";
+  private loginError = "";
+  private loginSuccess = "";
 
   submitLoginForm() {
-    this.loginSuccess = ''
-    this.loginError = ''
+    this.loginSuccess = "";
+    this.loginError = "";
 
-    if (this.loginUsername === '' || this.loginPassword === '') {
-      this.loginError = 'Username and password are required'
+    if (this.loginUsername === "" || this.loginPassword === "") {
+      this.loginError = "Username and password are required";
     } else {
       http
-        .post('/auth/login', {
+        .post("/auth/login", {
           username: this.loginUsername,
           password: this.loginPassword,
         })
         .then((response) => {
           if (response.data == true) {
-            this.loginSuccess = 'Success!'
-            this.$store.commit('setUser', this.loginUsername)
-            this.$router.push('/posts')
+            this.loginSuccess = "Success!";
+            this.$store.commit("setUser", this.loginUsername);
+            this.$router.push("/posts");
           } else {
-            this.loginError = 'Incorrect email or password.'
+            this.loginError = "Incorrect email or password.";
           }
         })
         .catch((err) => {
-          console.log(err.status)
-        })
+          console.log(err.status);
+        });
     }
   }
 
   get getLoginSuccess() {
-    return this.loginSuccess
+    return this.loginSuccess;
   }
 }
 </script>
 
 <style lang="scss">
-@import '../styles/colors';
-@import '../styles/utils';
+@import "../styles/colors";
+@import "../styles/utils";
 
 .login-form-container {
   width: 60%;

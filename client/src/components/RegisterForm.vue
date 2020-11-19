@@ -4,6 +4,7 @@
       <h2>Register</h2>
       <label for="Username">Username</label>
       <input
+        v-focus
         id="register-form-username"
         v-model="registerUsername"
         type="text"
@@ -24,44 +25,44 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
-import http from '../utils/http-common'
+import { Vue, Component } from "vue-property-decorator";
+import http from "../utils/http-common";
 
 @Component
 export default class RegisterForm extends Vue {
-  private registerUsername = ''
-  private registerPassword = ''
-  private registerStatus = ''
-  private registerSuccess = ''
-  private registerError = ''
+  private registerUsername = "";
+  private registerPassword = "";
+  private registerStatus = "";
+  private registerSuccess = "";
+  private registerError = "";
 
   submitRegisterForm() {
-    this.registerSuccess = ''
-    this.registerError = ''
+    this.registerSuccess = "";
+    this.registerError = "";
 
-    if (this.registerUsername == '' || this.registerPassword == '') {
-      this.registerError = 'Username and password are required'
+    if (this.registerUsername == "" || this.registerPassword == "") {
+      this.registerError = "Username and password are required";
     } else {
       http
-        .post('/auth/register', {
+        .post("/auth/register", {
           username: this.registerUsername,
           password: this.registerPassword,
         })
         .then((response) => {
-          const msg = response.data
-          this.registerError = msg
+          const msg = response.data;
+          this.registerError = msg;
         })
         .catch((err) => {
-          console.log(err)
-        })
+          console.log(err);
+        });
     }
   }
 }
 </script>
 
 <style lang="scss">
-@import '../styles/colors';
-@import '../styles/utils';
+@import "../styles/colors";
+@import "../styles/utils";
 
 .register-form-container {
   width: 60%;
