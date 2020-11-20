@@ -81,7 +81,7 @@ export default {
     display: inline-flex;
     align-items: center;
     justify-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     min-height: 56px;
     width: 100%;
   }
