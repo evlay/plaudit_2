@@ -10,19 +10,11 @@
           class="fa-spin-hover"
         />
       </button>
-      <button @click="showNewPostModal = true" class="new-post-button">
+      <button @click="showNewPostForm = true" class="new-post-button">
         New Post
       </button>
-    </div>
-    <div v-if="showNewPostModal" class="create-post-mask">
-      <div class="create-post-modal">
-        <div class="create-post-modal-header">
-          <label for="createPost">Create Post&nbsp;</label>
-          <button @click="showNewPostModal = false">
-            <font-awesome-icon icon="window-close" size="2x" />
-          </button>
-        </div>
-        <input type="text" />
+      <div v-if="showNewPostForm" class="create-post-mask">
+      <CreatePostForm></CreatePostForm>
       </div>
     </div>
     <div class="posts-container">
@@ -40,15 +32,17 @@
 <script>
 import Post from "@/components/Post";
 import http from "@/utils/http-common";
+import CreatePostForm from "@/components/CreatePostForm.vue"
 
 export default {
   components: {
     Post,
+    CreatePostForm
   },
   data() {
     return {
       posts: [],
-      showNewPostModal: false,
+      showNewPostForm: false,
     };
   },
   methods: {
@@ -127,26 +121,6 @@ export default {
     border: solid black 1px;
     border-radius: $rem-2;
     padding: $rem-3;
-  }
-
-  .create-post-modal {
-    background: gray;
-    margin: auto;
-    padding: $rem-4;
-    border-radius: $rem-4;
-
-    input {
-      width: 100%;
-      height: 10rem;
-    }
-
-    .create-post-modal-header {
-      width: 100%;
-      // background: coral;
-      text-align:center;
-      margin-bottom: $rem-2;
-      
-    }
   }
 }
 </style>
