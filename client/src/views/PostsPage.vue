@@ -13,9 +13,9 @@
       <button @click="showNewPostForm = true" class="new-post-button">
         New Post
       </button>
-      <div v-if="showNewPostForm" class="create-post-mask">
-      <CreatePostForm></CreatePostForm>
-      </div>
+    </div>
+    <div v-if="showNewPostForm" class="create-post-container">
+      <CreatePostForm v-on:closeCreateForm="showNewPostForm=false"></CreatePostForm>
     </div>
     <div class="posts-container">
       <ul v-for="post in posts" :key="post.__id">
@@ -30,48 +30,47 @@
 </template>
 
 <script>
-import Post from "@/components/Post";
-import http from "@/utils/http-common";
-import CreatePostForm from "@/components/CreatePostForm.vue"
+import Post from '@/components/Post'
+import http from '@/utils/http-common'
+import CreatePostForm from '@/components/CreatePostForm.vue'
 
 export default {
   components: {
     Post,
-    CreatePostForm
+    CreatePostForm,
   },
   data() {
     return {
       posts: [],
       showNewPostForm: false,
-    };
+    }
   },
   methods: {
     fetchPosts() {
       http
-        .get("/posts")
+        .get('/posts')
         .then((res) => {
-          this.posts = res.data;
-          console.log(this.posts);
+          this.posts = res.data
+          console.log(this.posts)
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
     },
   },
   mounted() {
-    this.fetchPosts();
+    this.fetchPosts()
   },
-};
+}
 </script>
 
 <style lang="scss">
-@import "../styles/colors";
-@import "../styles/utils";
+@import '../styles/colors';
+@import '../styles/utils';
 
 .posts-page {
   button {
     background: transparent;
     border: none;
     outline: none;
-    // background: coral;
   }
 
   button:hover {
@@ -121,6 +120,11 @@ export default {
     border: solid black 1px;
     border-radius: $rem-2;
     padding: $rem-3;
+    color: $slate;
+  }
+
+  .create-post-container {
+    margin: $rem-2 0;
   }
 }
 </style>

@@ -41,6 +41,11 @@ a {
   color: $slate;
   background: $white;
   padding: 0 $rem-4;
+  overflow: hidden;
+}
+
+text-area {
+  font-family: 'Roboto', sans-serif;
 }
 
 h1,
