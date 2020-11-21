@@ -53,10 +53,10 @@ class PostController implements Controller {
 
   private createPost = (req: express.Request, res: express.Response) => {
     const newPost: CreatePostDto = {
-      summary: req.body.summary,
       body: req.body.body,
       username: req.body.username,
-      createdOn: new Date().toISOString()
+      createdOn: new Date().toISOString(),
+      upvotes: 0
     }
 
     validate(plainToClass(CreatePostDto, newPost)).then((errors) => {

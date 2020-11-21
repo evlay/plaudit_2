@@ -10,7 +10,7 @@
           class="fa-spin-hover"
         />
       </button>
-      <button @click="showNewPostForm = true" class="new-post-button">
+      <button  @click="showNewPostForm = true" class="new-post-button">
         New Post
       </button>
     </div>
@@ -51,10 +51,12 @@ export default {
         .get('/posts')
         .then((res) => {
           this.posts = res.data
-          console.log(this.posts)
         })
         .catch((err) => console.log(err))
     },
+    emitTest() {
+      console.log('tester')
+    }
   },
   mounted() {
     this.fetchPosts()
@@ -121,6 +123,10 @@ export default {
     border-radius: $rem-2;
     padding: $rem-3;
     color: $slate;
+  }
+
+  .posts-container {
+    margin-bottom: $rem-4;
   }
 
   .create-post-container {

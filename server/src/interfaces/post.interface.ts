@@ -1,7 +1,7 @@
 interface Post {
-  summary: string;
   body: string;
   username: string;
+  upvotes: number;
   createdOn: Date;
 }
 
