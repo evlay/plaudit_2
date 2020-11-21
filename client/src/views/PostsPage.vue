@@ -1,4 +1,4 @@
-<template>
+<template v-on:postCreated="emitTest">
   <div class="posts-page">
     <div class="posts-title-container">
       <h1>Posts</h1>
@@ -23,6 +23,7 @@
           :summary="post.summary"
           :body="post.body"
           :createdOn="post.createdOn"
+          :upvotes="post.upvotes"
         />
       </ul>
     </div>

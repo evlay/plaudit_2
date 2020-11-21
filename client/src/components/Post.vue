@@ -1,7 +1,8 @@
 <template>
   <div class="post-container">
     <p>{{ body }}</p>
-    <p>Created: {{ createdOn }}</p>
+    <p>Upvotes: {{upvotes}}</p>
+    <p>Created: {{ createdOn.substring(0, 9) }}</p>
   </div>
 </template>
 
@@ -12,6 +13,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 export default class Post extends Vue {
   @Prop() body!: string
   @Prop() createdOn!: string
+  @Prop() upvotes!: number
 }
 </script>
 

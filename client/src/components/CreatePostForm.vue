@@ -31,6 +31,10 @@ export default class CreatePostForm extends Vue {
     this.$emit("closeCreateForm");
   }
 
+  createdPost() {
+    this.$emit("post-created");
+  }
+
   createPostReq() {
     this.createPostError = ""
     this.createPostSuccess = ""
@@ -44,9 +48,9 @@ export default class CreatePostForm extends Vue {
           username: "test",
         })
         .then((res) => {
-          console.log(res);
           this.postBody = "";
           this.createPostSuccess = "Post successfully submitted";
+          this.createdPost()
         })
         .catch((err) => {
           this.createPostError = err;
