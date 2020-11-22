@@ -6,9 +6,9 @@ class CreatePostDto {
   // @ts-ignore: disable strict class initialization
   body: string;
 
-  @IsNumber()
+  @IsNumber({}, {each:true})
   // @ts-ignore: disable strict class initialization
-  upvotes: number;
+  upvotes: string[];
 
   @IsString()
   // @ts-ignore: disable strict class initialization

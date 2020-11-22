@@ -22,7 +22,8 @@ class PostController implements Controller {
     this.router.post(this.path, this.createPost)
     this.router.get(`${this.path}/:id`, this.getPostById)
     this.router.patch(`${this.path}/:id`, this.updatePostById)
-    this.router.delete(`${this.path}/:id`, this.deleteUserById)
+    this.router.patch(`${this.path}/:id/upvote`, this.upvotePostById)
+    this.router.delete(`${this.path}/:id`, this.deletePostById)
   }
 
   private getAllPosts = (req: express.Request, res: express.Response) => {
@@ -31,6 +32,33 @@ class PostController implements Controller {
         res.send(err)
       } else {
         res.send(results)
+      }
+    })
+  }
+
+  private createPost = (req: express.Request, res: express.Response) => {
+    const newPost: CreatePostDto = {
+      body: req.body.body,
+      username: req.body.username,
+      createdOn: new Date().toISOString(),
+      upvotes: [],
+    }
+
+    validate(plainToClass(CreatePostDto, newPost)).then((errors) => {
+      if (errors.length > 0) {
+        res.json({
+          errors,
+        })
+      } else {
+        this.post
+          .create(newPost)
+          .then((results) => {
+            res.send(results)
+          })
+          .catch((err) => {
+            res.status(400).send('No post created: ' + err)
+            console.log('error: ' + err)
+          })
       }
     })
   }
@@ -47,57 +75,48 @@ class PostController implements Controller {
         res.send(post)
       })
       .catch((error) => {
-        res.status(404).send('no user found with that id')
+        res.status(404).send('no post found with that id')
       })
   }
 
-  private createPost = (req: express.Request, res: express.Response) => {
-    const newPost: CreatePostDto = {
-      body: req.body.body,
-      username: req.body.username,
-      createdOn: new Date().toISOString(),
-      upvotes: 0
-    }
+  private upvotePostById = (req: express.Request, res: express.Response) => {
+    const id = req.params.id
+    const upvoteUsername = req.params.username
 
-    validate(plainToClass(CreatePostDto, newPost)).then((errors) => {
-      if (errors.length > 0) {
-        res.json({
-          errors,
-        })
-      } else {
-        this.post
-          .create(newPost)
-          .then((results) => {
-            res.send(results)
-          })
-          .catch((err) => {
-            res.status(400).send('No user created: ' + err)
-            console.log('error: ' + err)
-          })
-      }
-    })
+    this.post
+      .findById(id)
+      .then((post) => {
+        if(!post){
+          res.status(400).send('no post found with that id')
+          return
+        }
+        res.send(post.upvotes)
+      })
+      .catch((error) => {
+        res.status(400).send('no post found with that id')
+      })
   }
 
   private updatePostById = (req: express.Request, res: express.Response) => {
     this.post
-      .findOneAndUpdate({ _id: req.params.id }, req.body)
+      .findOneAndUpdate({ __id: req.params.id }, req.body)
       .then((results) => {
         res.send(results)
       })
       .catch((err) => {
-        res.status(400).send('No user with that id found')
+        res.status(400).send('No post with that id found')
         console.log('error: ' + err)
       })
   }
 
-  private deleteUserById = (req: express.Request, res: express.Response) => {
+  private deletePostById = (req: express.Request, res: express.Response) => {
     this.post
       .findOneAndDelete({ _id: req.params.id })
       .then((results) => {
         res.send(results)
       })
       .catch((err) => {
-        res.status(400).send('No user with that id found')
+        res.status(400).send('No post with that id found')
         console.log('error: ' + err)
       })
   }
