@@ -1,7 +1,7 @@
 <template>
   <div class="post-container">
     <p>{{ body }}</p>
-    <p>Upvotes: {{upvotes}}</p>
+    <button><font-awesome-icon icon="thumbs-up" /> {{ upvotes }}</button>
     <p>Created: {{ createdOn.substring(0, 9) }}</p>
   </div>
 </template>
@@ -19,11 +19,21 @@ export default class Post extends Vue {
 
 <style lang="scss" scoped>
 @import '../styles/utils';
+@import '../styles/colors';
 
 .post-container {
+  flex-direction: column;
+  min-width: 100%;
   border: solid black 1px;
   border-radius: $rem-2;
   padding: $rem-4;
   margin: $rem-2 0 0 0;
+
+  button {
+    font-family: 'Roboto', sans-serif;
+    border: solid 1px $slate;
+    padding: $rem-1;
+    border-radius: $rem-2;
+  }
 }
 </style>
