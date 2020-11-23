@@ -1,7 +1,7 @@
 <template>
   <div class="post-container">
     <p>{{ body }}</p>
-    <button><font-awesome-icon icon="thumbs-up" /> {{ upvotes }}</button>
+    <button class="thumbs-up-button"><font-awesome-icon icon="thumbs-up" /> {{ upvotes.length }}</button>
     <p>Created: {{ createdOn.substring(0, 9) }}</p>
   </div>
 </template>
@@ -13,7 +13,19 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 export default class Post extends Vue {
   @Prop() body!: string
   @Prop() createdOn!: string
-  @Prop() upvotes!: number
+  @Prop() upvotes!: string[]
+  @Prop() id!: string
+  @Prop() upvotePost!: Function
+
+  public data() {
+    return {
+      
+    }
+  }
+
+  private mounted(){
+    console.log(this.id)
+  }
 }
 </script>
 
@@ -34,6 +46,14 @@ export default class Post extends Vue {
     border: solid 1px $slate;
     padding: $rem-1;
     border-radius: $rem-2;
+  }
+
+  .thumbs-up-button {
+    color: $slate;
+  }
+
+  .liked-post {
+    color: $forest;
   }
 }
 </style>

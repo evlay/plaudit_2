@@ -42,7 +42,7 @@ const routes: Array<RouteConfig> = [
     path: '/posts',
     name: 'posts',
     beforeEnter: function (to, from, next) {
-      if(!store.state.currentUser) {
+      if(!store.state.currentUser || !localStorage.getItem('currentPlauditUser')) {
         next('/login')
       } else {
         next()

@@ -22,7 +22,7 @@ class PostController implements Controller {
     this.router.post(this.path, this.createPost)
     this.router.get(`${this.path}/:id`, this.getPostById)
     this.router.patch(`${this.path}/:id`, this.updatePostById)
-    this.router.patch(`${this.path}/:id/upvote`, this.upvotePostById)
+    this.router.patch(`${this.path}/upvote/:id`, this.upvotePostById)
     this.router.delete(`${this.path}/:id`, this.deletePostById)
   }
 
@@ -79,22 +79,32 @@ class PostController implements Controller {
       })
   }
 
-  private upvotePostById = (req: express.Request, res: express.Response) => {
+  private upvotePostById = async (req: express.Request, res: express.Response) => {
     const id = req.params.id
-    const upvoteUsername = req.params.username
+    const upvoteUsername = req.body.username
 
-    this.post
-      .findById(id)
-      .then((post) => {
-        if(!post){
-          res.status(400).send('no post found with that id')
-          return
-        }
-        res.send(post.upvotes)
-      })
-      .catch((error) => {
-        res.status(400).send('no post found with that id')
-      })
+    if (!id || !upvoteUsername) {
+      res.send('username and post id are required')
+    } else {
+       this.post.findById(id)
+        .then(post => {
+          if(post == null) { 
+            res.status(400).send('post was null')
+            return
+           }
+          
+          if(post.upvotes.includes(upvoteUsername)){
+            res.send('user already liked this post')
+          } else {
+            post.upvotes.push(upvoteUsername)
+            post.save()
+            res.send(`post ${post._id} upvoted by ${upvoteUsername}`)
+          }
+        })
+        .catch(error => {
+          res.send(error)
+        })
+    }
   }
 
   private updatePostById = (req: express.Request, res: express.Response) => {

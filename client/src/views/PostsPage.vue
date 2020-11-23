@@ -20,6 +20,8 @@
     <div class="posts-container">
       <ul v-for="post in posts" :key="post.__id">
         <Post
+          v-on:upvote-test="consoleTest"
+          :id="post.id"
           :summary="post.summary"
           :body="post.body"
           :createdOn="post.createdOn"
@@ -55,6 +57,18 @@ export default {
         })
         .catch((err) => console.log(err))
     },
+    upvotePost() {
+    http.patch(`/posts/upvote/${this.id}`, {username: this.$store.state.currentUser})
+    .then(response => {
+      console.log(response)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  },
+  consoleTest() {
+    console.log('test')
+  },
     emitTest() {
       console.log('tester')
     }
