@@ -18,9 +18,9 @@
       <CreatePostForm v-on:closeCreateForm="showNewPostForm=false"></CreatePostForm>
     </div>
     <div class="posts-container">
-      <ul v-for="post in posts" :key="post.__id">
+      <ul v-for="post in posts" :key="post._id">
         <Post
-          v-on:upvote-test="consoleTest"
+          v-on:upvote-post="upvotePost($event, post._id)"
           :id="post.id"
           :summary="post.summary"
           :body="post.body"
@@ -46,8 +46,10 @@ export default {
     return {
       posts: [],
       showNewPostForm: false,
+      currentUser: localStorage.getItem('currentPlauditUser')
     }
   },
+  computed: {},
   methods: {
     fetchPosts() {
       http
@@ -57,21 +59,19 @@ export default {
         })
         .catch((err) => console.log(err))
     },
-    upvotePost() {
-    http.patch(`/posts/upvote/${this.id}`, {username: this.$store.state.currentUser})
+    upvotePost(event, id) {
+    http.patch(`/posts/upvote/${id}`, {username: this.$store.state.currentUser})
     .then(response => {
       console.log(response)
+      this.fetchPosts()
     })
     .catch(error => {
       console.log(error)
     })
   },
-  consoleTest() {
-    console.log('test')
-  },
-    emitTest() {
-      console.log('tester')
-    }
+  upvoteTest(event, id){
+    console.log(id)
+  }
   },
   mounted() {
     this.fetchPosts()
@@ -146,6 +146,10 @@ export default {
 
   .create-post-container {
     margin: $rem-2 0;
+  }
+
+  .liked-post {
+    color: $forest;
   }
 }
 </style>

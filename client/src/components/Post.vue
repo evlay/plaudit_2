@@ -1,7 +1,7 @@
 <template>
   <div class="post-container">
     <p>{{ body }}</p>
-    <button class="thumbs-up-button"><font-awesome-icon icon="thumbs-up" /> {{ upvotes.length }}</button>
+    <button @click="upvotePost" class="thumbs-up-button"><font-awesome-icon icon="thumbs-up" /> {{ upvotes.length }}</button>
     <p>Created: {{ createdOn.substring(0, 9) }}</p>
   </div>
 </template>
@@ -15,16 +15,9 @@ export default class Post extends Vue {
   @Prop() createdOn!: string
   @Prop() upvotes!: string[]
   @Prop() id!: string
-  @Prop() upvotePost!: Function
 
-  public data() {
-    return {
-      
-    }
-  }
-
-  private mounted(){
-    console.log(this.id)
+  private upvotePost(){
+    this.$emit('upvote-post')
   }
 }
 </script>
@@ -50,10 +43,6 @@ export default class Post extends Vue {
 
   .thumbs-up-button {
     color: $slate;
-  }
-
-  .liked-post {
-    color: $forest;
   }
 }
 </style>

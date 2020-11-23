@@ -23,6 +23,7 @@ class PostController implements Controller {
     this.router.get(`${this.path}/:id`, this.getPostById)
     this.router.patch(`${this.path}/:id`, this.updatePostById)
     this.router.patch(`${this.path}/upvote/:id`, this.upvotePostById)
+    this.router.patch(`${this.path}/downvote/:id`, this.removeUpvoteById)
     this.router.delete(`${this.path}/:id`, this.deletePostById)
   }
 
@@ -34,6 +35,7 @@ class PostController implements Controller {
         res.send(results)
       }
     })
+    .sort({createdOn: 'descending'})
   }
 
   private createPost = (req: express.Request, res: express.Response) => {
@@ -106,6 +108,35 @@ class PostController implements Controller {
         })
     }
   }
+  private removeUpvoteById = (req: express.Request, res: express.Response) => {
+    const id = req.params.id
+    const removeUsername = req.body.username
+
+    if (!id || !removeUsername) {
+      res.send('username and post id are required')
+    } else {
+      this.post.findById(id)
+        .then(post => {
+          if(post == null) { 
+            res.status(400).send('post was null')
+            return
+           }
+           if(post.upvotes.includes(removeUsername)){
+             const index = post.upvotes.indexOf(removeUsername)
+             if(index > -1){
+               post.upvotes.splice(index, 1)
+             }
+             post.save()
+            res.send(`username ${removeUsername} removed upvote from post ${post._id}`)
+           } else {
+             res.send(`username ${removeUsername} not found on post ${post._id}`)
+           }
+        })
+        .catch(err => {
+          res.send(err)
+        })
+    }
+  } 
 
   private updatePostById = (req: express.Request, res: express.Response) => {
     this.post
