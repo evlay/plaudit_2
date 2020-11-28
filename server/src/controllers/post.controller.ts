@@ -96,7 +96,7 @@ class PostController implements Controller {
            }
           
           if(post.upvotes.includes(upvoteUsername)){
-            res.send('user already liked this post')
+            res.send('user already upvoted this post')
           } else {
             post.upvotes.push(upvoteUsername)
             post.save()

@@ -45,12 +45,15 @@ export default class CreatePostForm extends Vue {
       http
         .post("/posts", {
           body: this.postBody,
-          username: "test",
+          username: this.$store.state.currentUser,
         })
-        .then((res) => {
+        .then((
+          // res
+        ) => {
           this.postBody = "";
           this.createPostSuccess = "Post successfully submitted";
-          console.log(res.data)
+          setTimeout(() => this.createPostSuccess = "", 5000)
+          this.createdPost()
         })
         .catch((err) => {
           this.createPostError = err;

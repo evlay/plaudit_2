@@ -42,6 +42,7 @@ a {
   background: $white;
   padding: 0 $rem-4;
   overflow: hidden;
+  line-height: 1.6;
 }
 
 text-area {

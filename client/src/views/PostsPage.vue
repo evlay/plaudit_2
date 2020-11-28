@@ -15,7 +15,7 @@
       </button>
     </div>
     <div v-if="showNewPostForm" class="create-post-container">
-      <CreatePostForm v-on:closeCreateForm="showNewPostForm=false"></CreatePostForm>
+      <CreatePostForm v-on:post-created="fetchPosts" v-on:closeCreateForm="showNewPostForm=false"></CreatePostForm>
     </div>
     <div class="posts-container">
       <ul v-for="post in posts" :key="post._id">
@@ -25,7 +25,9 @@
           :summary="post.summary"
           :body="post.body"
           :createdOn="post.createdOn"
-          :upvotes="post.upvotes"
+          :upvotes="post.upvotes.length"
+          :user="post.username"
+          :isLikedByCurrentUser="post.upvotes.includes(currentUser)"
         />
       </ul>
     </div>
@@ -40,16 +42,17 @@ import CreatePostForm from '@/components/CreatePostForm.vue'
 export default {
   components: {
     Post,
-    CreatePostForm,
+    CreatePostForm
   },
   data() {
     return {
       posts: [],
       showNewPostForm: false,
-      currentUser: localStorage.getItem('currentPlauditUser')
+      currentUser: localStorage.getItem('currentPlauditUser'),
     }
   },
-  computed: {},
+  computed: {
+  },
   methods: {
     fetchPosts() {
       http
@@ -62,16 +65,19 @@ export default {
     upvotePost(event, id) {
     http.patch(`/posts/upvote/${id}`, {username: this.$store.state.currentUser})
     .then(response => {
-      console.log(response)
-      this.fetchPosts()
+      if(response.data == "user already upvoted this post") {
+        http.patch(`/posts/downvote/${id}`, {username: this.$store.state.currentUser})
+          .then(() => {
+            console.log('post downvoted')
+          })
+          .catch(err => console.log(err))
+      }
+      setTimeout(() => this.fetchPosts(), 100) 
     })
     .catch(error => {
       console.log(error)
     })
   },
-  upvoteTest(event, id){
-    console.log(id)
-  }
   },
   mounted() {
     this.fetchPosts()

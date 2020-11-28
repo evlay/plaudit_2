@@ -1,8 +1,9 @@
 <template>
   <div class="post-container">
     <p>{{ body }}</p>
-    <button @click="upvotePost" class="thumbs-up-button"><font-awesome-icon icon="thumbs-up" /> {{ upvotes.length }}</button>
     <p>Created: {{ createdOn.substring(0, 9) }}</p>
+    <p>By: {{user}}</p>
+    <button @click="upvotePost" :class="{ likedPost: isLikedByCurrentUser }"><font-awesome-icon icon="thumbs-up"/>{{ upvotes }}</button>
   </div>
 </template>
 
@@ -15,10 +16,13 @@ export default class Post extends Vue {
   @Prop() createdOn!: string
   @Prop() upvotes!: string[]
   @Prop() id!: string
+  @Prop() user!: string
+  @Prop() isLikedByCurrentUser!: boolean
 
   private upvotePost(){
     this.$emit('upvote-post')
   }
+
 }
 </script>
 
@@ -33,16 +37,28 @@ export default class Post extends Vue {
   border-radius: $rem-2;
   padding: $rem-4;
   margin: $rem-2 0 0 0;
+  color: $slate;
 
   button {
     font-family: 'Roboto', sans-serif;
     border: solid 1px $slate;
     padding: $rem-1;
     border-radius: $rem-2;
+    margin-top: $rem-1;
+  }
+
+  button:hover {
+    opacity: .7;
+    transition: opacity .1s;
   }
 
   .thumbs-up-button {
     color: $slate;
+  }
+
+  .likedPost {
+    color: $forest;
+    border: solid 1px $forest;
   }
 }
 </style>

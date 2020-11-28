@@ -5,8 +5,9 @@
         <router-link class="nav-logo" to="/">Plaudit</router-link>
       </div>
       <router-link to="/">Home</router-link>
-      <router-link to="/register">Register</router-link>
+      <router-link v-if="!currentUser" to="/register">Register</router-link>
       <router-link to="/posts">Posts</router-link>
+      <router-link v-if="currentUser" to="/my-posts">My Posts</router-link>
       <!-- <p v-if="currentUser">{{ currentUser }}</p> -->
       <button v-if="currentUser" @click="logout">{{ currentUser }} logout ></button>
       <button v-if="!currentUser"><router-link  to="/login">login ></router-link></button>
