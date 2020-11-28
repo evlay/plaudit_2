@@ -1,4 +1,4 @@
-<template v-on:postCreated="emitTest">
+<template>
   <div class="posts-page">
     <div class="posts-title-container">
       <h1>Posts</h1>
@@ -8,7 +8,7 @@
           icon="sync"
           size="2x"
           class="fa-spin-hover"
-        />
+        ></font-awesome-icon><p class="fetch-post-container" v-if="fetchPostDone">Done!</p>
       </button>
       <button  @click="showNewPostForm = true" class="new-post-button">
         New Post
@@ -21,6 +21,7 @@
       <ul v-for="post in posts" :key="post._id">
         <Post
           v-on:upvote-post="upvotePost($event, post._id)"
+          v-on:delete-post="deletePost($event, post._id)"
           :id="post.id"
           :summary="post.summary"
           :body="post.body"
@@ -28,6 +29,7 @@
           :upvotes="post.upvotes.length"
           :user="post.username"
           :isLikedByCurrentUser="post.upvotes.includes(currentUser)"
+          :postByCurrentUser="post.username === currentUser"
         />
       </ul>
     </div>
@@ -49,6 +51,7 @@ export default {
       posts: [],
       showNewPostForm: false,
       currentUser: localStorage.getItem('currentPlauditUser'),
+      fetchPostDone: false
     }
   },
   computed: {
@@ -59,6 +62,17 @@ export default {
         .get('/posts')
         .then((res) => {
           this.posts = res.data
+          this.fetchPostDone = true
+          setTimeout(() => this.fetchPostDone = false, 2000)
+        })
+        .catch((err) => console.log(err))
+    },
+    initFetchPosts() {
+      http
+        .get('/posts')
+        .then((res) => {
+          this.posts = res.data
+          this.fetchPostDone = false
         })
         .catch((err) => console.log(err))
     },
@@ -72,15 +86,25 @@ export default {
           })
           .catch(err => console.log(err))
       }
-      setTimeout(() => this.fetchPosts(), 100) 
+      setTimeout(() => this.initFetchPosts(), 100) 
     })
     .catch(error => {
       console.log(error)
     })
   },
+  deletePost(event, id){
+    http.delete(`/posts/${id}`)
+      .then(() => {
+        console.log(`post deleted with id ${id}`)
+        this.fetchPosts()
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
   },
   mounted() {
-    this.fetchPosts()
+    this.initFetchPosts()
   },
 }
 </script>
@@ -107,7 +131,18 @@ export default {
     justify-content: space-between;
     min-height: 56px;
     width: 100%;
+
+    button:hover {
+      opacity: .9;
+      transition: opacity .1s;
+    }
   }
+
+  .fetch-post-container {
+      color: $slate;
+      font-weight: 700;
+      margin-top: $rem-1;
+    }
 
   .fa-spin-hover {
     color: $slate;

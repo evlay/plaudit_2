@@ -1,9 +1,15 @@
 <template>
   <div class="post-container">
     <p>{{ body }}</p>
-    <p>Created: {{ createdOn.substring(0, 9) }}</p>
-    <p>By: {{user}}</p>
-    <button @click="upvotePost" :class="{ likedPost: isLikedByCurrentUser }"><font-awesome-icon icon="thumbs-up"/>{{ upvotes }}</button>
+    <p>Created: {{ createdOn.substring(0, 10) }}</p>
+    <p>By: {{ user }}</p>
+    <button @click="upvotePost" :class="{ likedPost: isLikedByCurrentUser }">
+      
+      <font-awesome-icon icon="thumbs-up" />&nbsp; {{ upvotes }}
+    </button>
+    <button v-if="postByCurrentUser" 
+    @click="deletePost"
+    class="remove-post-btn">Remove</button>
   </div>
 </template>
 
@@ -18,11 +24,15 @@ export default class Post extends Vue {
   @Prop() id!: string
   @Prop() user!: string
   @Prop() isLikedByCurrentUser!: boolean
+  @Prop() postByCurrentUser!: boolean
 
-  private upvotePost(){
+  private upvotePost() {
     this.$emit('upvote-post')
   }
 
+  private deletePost() {
+    this.$emit('delete-post')
+  }
 }
 </script>
 
@@ -47,9 +57,15 @@ export default class Post extends Vue {
     margin-top: $rem-1;
   }
 
+  .remove-post-btn {
+    color: red;
+    border: solid 1px red;
+    margin: 0 0 0 $rem-1;
+  }
+
   button:hover {
-    opacity: .7;
-    transition: opacity .1s;
+    opacity: 0.75;
+    transition: opacity 0.1s;
   }
 
   .thumbs-up-button {
