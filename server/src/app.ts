@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import loggerMiddleware from './middleware/logger.middleware'
 import cors from 'cors'
+import rateLimit from 'express-rate-limit'
 // import errorMiddleware from './middleware/error.middleware'
 
 dotenv.config()
@@ -28,6 +29,11 @@ class App {
     this.app.use(loggerMiddleware)
     this.app.use(express.json())
     this.app.use(cors())
+    this.app.use(rateLimit({
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 100, // limit each IP to 100 requests per windowMs
+      message: "too many request from this IP in the last 15 minutes"
+    }))
   }
 
   private initializeErrorHandler(){
