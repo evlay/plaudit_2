@@ -175,7 +175,7 @@ export default {
 
   .new-post-button {
     font-weight: 700;
-    border: solid black 1px;
+    border: solid $slate 1px;
     border-radius: $rem-2;
     padding: $rem-3;
     color: $slate;
